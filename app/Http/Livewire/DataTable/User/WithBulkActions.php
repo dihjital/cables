@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\DataTable\Cable;
+namespace App\Http\Livewire\DataTable\User;
 
 use App\Exports\CablesExport;
 

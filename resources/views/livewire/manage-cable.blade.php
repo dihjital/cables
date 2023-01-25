@@ -27,7 +27,7 @@
 
             <div class="float-right space-x-1 w-4/12">
                 @if(count($selectedItems))
-                    <x-buttons.export wire:click="">
+                    <x-buttons.export wire:click="exportSelected">
                         Export
                     </x-buttons.export>
                     <button class="px-5 py-2 bg-gray-600 hover:bg-gray-700 text-white text-xs rounded-xl"
@@ -42,7 +42,7 @@
                         Reset
                     </x-buttons.reset-filter>
                 @endif
-                <div class="text-xs" wire:loading.delay wire:target="">
+                <div class="text-xs" wire:loading.delay wire:target="exportSelected">
                     Export in progress ...
                 </div>
             </div>

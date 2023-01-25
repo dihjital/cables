@@ -30,6 +30,11 @@
                     <x-nav-link :href="route('history')" :active="request()->routeIs('history')">
                         {{ __('Napló') }}
                     </x-nav-link>
+                    @can('manage-users')
+                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
+                        {{ __('Felhasználók') }}
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 

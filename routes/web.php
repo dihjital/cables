@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminCableController;
 use App\Http\Controllers\AdminConnectivityDeviceController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ConnectivityDeviceController;
@@ -60,6 +61,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/cables', [AdminCableController::class, 'index'])->name('cables');
 
     Route::get('/history', [HistoryController::class, 'index'])->name('history');
+
+    Route::get('/admin/users', [UserController::class, 'index'])->name('users');
 
 });
 

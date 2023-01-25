@@ -6,11 +6,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Kyslik\ColumnSortable\Sortable;
 
 class Cable extends Model
 {
-    use HasFactory, Sortable;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -19,16 +18,6 @@ class Cable extends Model
         'end',
         'i_time',
         'patch',
-        'owner_id',
-        'cable_purpose_id'
-    ];
-
-    public $sortable = [
-        'name',
-        'cable_type_id',
-        'start',
-        'end',
-        'i_time',
         'owner_id',
         'cable_purpose_id'
     ];
