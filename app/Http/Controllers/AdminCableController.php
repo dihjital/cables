@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 
 class AdminCableController extends Controller
 {
-    public function index () {
-        return view('admin.cables.index');
-    }
+
+    public function index () { return view('admin.cables.index'); }
+
+    public function create () { return view('admin.cables.create');}
+
 }

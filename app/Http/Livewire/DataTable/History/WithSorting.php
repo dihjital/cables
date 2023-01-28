@@ -4,8 +4,8 @@ namespace App\Http\Livewire\DataTable\History;
 
 trait WithSorting {
 
-    public $sortField;
-    public $sortDirection = 'asc';
+    public $sortField = 'history.updated_at';
+    public $sortDirection = 'desc';
 
     public function sortBy($field) {
 

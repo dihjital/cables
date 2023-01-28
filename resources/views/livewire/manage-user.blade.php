@@ -37,7 +37,7 @@
                 <div class="flex items-center">
                     <button wire:click="sortBy('updated_at')"
                             class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Utolsó módosítása
+                        Utolsó módosítás
                     </button>
                     <x-table.sort-icon field="updated_at"
                                        :sortField="$sortField" :sortDirection="$sortDirection"></x-table.sort-icon>
@@ -50,11 +50,11 @@
                     <x-table.cell colspan="9" class="bt-0">
                         @unless($selectAll)
                             <div class="text-sm">
-                                <span>Kiválasztott rekordok száma: <strong>{{ $cables->count() }}</strong> db., ki szeretnéd mind a(z) <strong>{{ $cables->total() }}</strong> db.-ot választani?</span>
+                                <span>Kiválasztott rekordok száma: <strong>{{ $users->count() }}</strong> db., ki szeretnéd mind a(z) <strong>{{ $users->total() }}</strong> db.-ot választani?</span>
                                 <a href="#" wire:click="$set('selectAll', true)" class="ml-1 text-blue-600">Összes rekord kiválasztása</a>
                             </div>
                         @else
-                            <span class="text-sm">Jelenleg mind a(z) <strong>{{ $cables->total() }}</strong> rekordot kiválasztottad.</span>
+                            <span class="text-sm">Jelenleg mind a(z) <strong>{{ $users->total() }}</strong> rekordot kiválasztottad.</span>
                         @endif
                     </x-table.cell>
                 </x-table.row>

@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\Action;
+use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cable extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, WithHistory;
 
     protected $fillable = [
         'name',
@@ -19,7 +22,8 @@ class Cable extends Model
         'i_time',
         'patch',
         'owner_id',
-        'cable_purpose_id'
+        'cable_purpose_id',
+        'comment'
     ];
 
     protected $appends = [
@@ -33,15 +37,42 @@ class Cable extends Model
         'i_time'
     ];
 
+    protected $attributes = [
+        'cable_type_id' => 1,
+        'cable_purpose_id' => 1,
+        'owner_id' => 1
+    ];
+
+    public static function boot () {
+
+        parent::boot();
+
+        // TODO: tömeges módosításnál és törlésnél ezek nem futnak le
+        // ezeket át kell alakítani úgy, hogy cursor-t használunk
+
+        static::updating(function ($cable) {
+            $cable->history(Action::Modify);
+        });
+
+        static::deleted(function ($cable) {
+            $cable->history(Action::Delete);
+        });
+
+        static::created(function ($cable) {
+            $cable->history(Action::Add);
+        });
+
+    }
+
     public function fullName(): Attribute {
         return Attribute::make(
-            get: fn ($value) => $value = $this->cable_type->abbreviation.$this->name
+            get: fn ($value) => $value = $this->cable_type?->abbreviation.$this->name
         );
     }
 
     public function status(): Attribute {
         return Attribute::make(
-            get: fn ($value) => $value = $this->connection_points->first()->cable_pair_status->name
+            get: fn ($value) => $value = $this->connection_points->first()?->cable_pair_status->name
         );
     }
 

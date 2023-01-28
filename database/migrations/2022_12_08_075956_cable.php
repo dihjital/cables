@@ -32,6 +32,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->timestamp('i_time');
             $table->boolean('patch')->default(false);
+            $table->text('comment');
             $table->unsignedBigInteger('owner_id');
             $table->foreign('owner_id')
                 ->references('id')
@@ -43,6 +44,7 @@ return new class extends Migration
                 ->on('cable_purposes')
                 ->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

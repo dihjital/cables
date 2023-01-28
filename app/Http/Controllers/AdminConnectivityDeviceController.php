@@ -74,8 +74,7 @@ class AdminConnectivityDeviceController extends Controller
     }
 
     public function create () {
-        return view('admin.connectivitydevices.create', [
-        ]);
+        return view('admin.connectivitydevices.create', []);
     }
 
     public function store() {

@@ -24,7 +24,7 @@
                     <x-nav-link :href="route('locations')" :active="request()->routeIs('locations')">
                         {{ __('Lokációk') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('cables')" :active="request()->routeIs('cables')">
+                    <x-nav-link :href="route('cables.index')" :active="request()->routeIs('cables.*')">
                         {{ __('Kábelek') }}
                     </x-nav-link>
                     <x-nav-link :href="route('history')" :active="request()->routeIs('history')">

@@ -47,4 +47,9 @@ class History extends Model
         return $query->orderBy('updated_at', $direction);
     }
 
+    public function scopeGetByAction(Builder $query, string $action) {
+        // return $query->where('action', constant("\App\Enums\Action::$action"));
+        return $query->where('action', Action::from(strtolower($action))->name);
+    }
+
 }

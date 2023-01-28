@@ -12,6 +12,27 @@
                     <option value="50">50</option>
                 </x-forms.select>
             </div>
+
+            @php
+                $actionTypes = \App\Enums\Action::cases();
+            @endphp
+
+            <div class="md:w-10/12 inline-flex rounded-md justify-end float-right" role="group">
+                @foreach (array_column($actionTypes, 'name') as $name)
+                    <button type="button"
+                            wire:click="$set('search.action', '{{ $name }}')"
+                            class="px-4 py-2 text-sm font-medium text-gray-900 bg-white
+                                             {{ $loop->iteration % 2 ? 'border' : 'border-t border-b' }}  border-gray-200
+                                             {{ $loop->first ? 'rounded-l-lg' : ($loop->last ? 'rounded-r-md' : '') }}
+                                             hover:bg-gray-100 hover:text-blue-700
+                                             focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700
+                                             dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600
+                                             dark:focus:ring-blue-500 dark:focus:text-white">
+                        {{ $name }}
+                    </button>
+                @endforeach
+            </div>
+
         </div>
     </div>
 

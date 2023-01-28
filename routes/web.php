@@ -58,7 +58,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('connectivity_device.new');
 
     // Admin routes for cables
-    Route::get('/admin/cables', [AdminCableController::class, 'index'])->name('cables');
+    Route::get('/admin/cables', [AdminCableController::class, 'index'])->name('cables.index');
+    Route::get('/admin/cable/create', [AdminCableController::class, 'create'])->name('cables.create');
 
     Route::get('/history', [HistoryController::class, 'index'])->name('history');
 

@@ -19,9 +19,9 @@ class ManageConnectivitydevice extends Component
 
     use WithPerPagePagination, WithSorting, WithFiltering, WithBulkActions, WithCachedRows;
 
-    public $showDeleteModal = false;
-    public $showOwnersDropDown = false;
-    public $showAdvancedSearch = false;
+    public bool $showDeleteModal = false;
+    public bool $showOwnersDropDown = false;
+    public bool $showAdvancedSearch = false;
 
     public ConnectivityDevice $current_cd;
 
