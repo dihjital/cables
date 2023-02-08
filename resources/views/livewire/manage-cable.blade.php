@@ -183,7 +183,10 @@
                     <x-table.cell>
                         <div class="flex items-center">
                             <div class="text-sm font-medium text-gray-900">
-                                {{ $cable->cable_purpose->name }}
+                                <span style="{{ $cable->purpose_color }}"
+                                      class="text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
+                                    {{ $cable->cable_purpose->name }}
+                                </span>
                             </div>
                         </div>
                     </x-table.cell>

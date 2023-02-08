@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Action;
+use App\Models\Traits\WithCablesDescription;
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cable extends Model
 {
-    use HasFactory, SoftDeletes, WithHistory;
+    use HasFactory, SoftDeletes, WithHistory, WithCablesDescription;
 
     protected $fillable = [
         'name',
@@ -94,12 +95,41 @@ class Cable extends Model
         );
     }
 
+    public static function getNextCableName(int $type = 3, string $location_name = ''): string {
+
+        $cable_name =
+            Cable::with('cable_type')
+                ->where('cable_type_id', $type)
+                ->where('name', 'like', "$location_name%")
+                ->orderBy('name', 'desc')
+                ->get()
+                ->first()
+                ?->full_name;
+
+        return $cable_name
+            ? substr($cable_name, 0, 1).(substr($cable_name, 1) + 1)
+            : '';
+
+    }
+
     public function getStatusColorAttribute() {
         return [
             'Disconnected' => 'color: white; background-color: #42a5f5',
             'In use' => '',
             'Spare' => 'color: white; background-color: #ef5350'
          ][$this->status];
+    }
+
+    public function getPurposeColorAttribute() {
+        return [
+            'Data Network' => '',
+            'Telephone' => '',
+            'LAN' => '',
+            'MLL' => '',
+            'ISDN30' => '',
+            'ISDN2' => '',
+            'Gerinckábel' => 'color: white; background-color: #ef5350'
+        ][$this->cable_purpose->name];
     }
 
     public function getDateForHumansAttribute() {

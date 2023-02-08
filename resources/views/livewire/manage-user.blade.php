@@ -90,7 +90,9 @@
                         </label>
                     </x-table.cell>
                     <x-table.cell>
-                        {{ \Carbon\Carbon::parse($user->updated_at)->diffForhumans() }}
+                        <div class="text-sm font-medium text-gray-900">
+                            {{ \Carbon\Carbon::parse($user->updated_at)->diffForhumans() }}
+                        </div>
                     </x-table.cell>
                 </x-table.row>
             @empty

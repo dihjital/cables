@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Action;
+use App\Models\Traits\WithCDDescription;
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ConnectivityDevice extends Model
 {
-    use HasFactory, SoftDeletes, WithHistory;
+    use HasFactory, SoftDeletes, WithHistory, WithCDDescription;
 
     protected $casts = [
         'action' => Action::class
@@ -162,13 +163,10 @@ class ConnectivityDevice extends Model
 
     }
 
-    public function calculateCdRange(string $start = '', string $end = ''): array {
+    public function subtractConnectionPoints(string $start = '', string $end = ''): object {
 
         $start = $start ?: $this->start;
         $end = $end ?: $this->end;
-
-        $start_stripe = $start_zone = $start_port = 0;
-        $end_stripe = $end_zone = $end_port = 0;
 
         $start_matches = $end_matches = [];
 
@@ -178,23 +176,42 @@ class ConnectivityDevice extends Model
         preg_match("/^Z([0-9]{3})S([0-9]{2})P([0-9]{3})$/si",
             $end, $end_matches);
 
-        $start_zone   = $start_matches[1];
-        $start_stripe = $start_matches[2];
-        $start_port   = $start_matches[3];
+        return (object) [
+            'start_zone' => $start_matches[1],
+            'end_zone' => $end_matches[1],
+            'start_stripe' => $start_matches[2],
+            'end_stripe' => $end_matches[2],
+            'start_port' => $start_matches[3],
+            'end_port' => $end_matches[3]
+        ];
 
-        $end_zone     = $end_matches[1];
-        $end_stripe   = $end_matches[2];
-        $end_port     = $end_matches[3];
+    }
+
+    public function calculateCdRange(string $start = '', string $end = ''): array {
+
+        $start = $start ?: $this->start;
+        $end = $end ?: $this->end;
+
+        $cdRange = $this->subtractConnectionPoints($start, $end);
 
         $conn_points = [];
 
-        for($i = $start_stripe; $i <= $end_stripe; $i++) {
-            for($j = $start_port; $j <= $end_port; $j++) {
-                $conn_points[] = sprintf('Z%03dS%02dP%03d', $start_zone, $i, $j);
+        for($i = $cdRange->start_stripe; $i <= $cdRange->end_stripe; $i++) {
+            for($j = $cdRange->start_port; $j <= $cdRange->end_port; $j++) {
+                $conn_points[] = sprintf('Z%03dS%02dP%03d', $cdRange->start_zone, $i, $j);
             }
         }
 
         return $conn_points;
+
+    }
+
+    public function getNextFreeConnectionPointName(): string {
+
+        return $this->calculateUsableCdRange()
+            ->filter(function ($value, $key) {
+                return $value === 'Free';
+            })->keys()->take(1)->shift() ?: '';
 
     }
 

@@ -125,12 +125,30 @@
                     <x-table.row id="detail-row-{{ $item->id }}"
                                  wire:key="detail-row-{{ $item->id }}">
                         <x-table.cell colspan="3">
-                            <div class="text-sm font-medium text-gray-900">BEFORE:</div>
-                            <div class="text-sm text-gray-500">{{ $item->before }}</div>
+                            <div class="text-sm font-medium text-gray-900">Eredeti értékek:</div>
+                            @php
+                                $before = (array) json_decode($item->before);
+                            @endphp
+                            @forelse($before as $attribute => $value)
+                                <div class="text-sm text-gray-500">
+                                    {{ __($model->{$attribute.'_description'}.": $value") }}
+                                </div>
+                            @empty
+                            @endforelse
                         </x-table.cell>
                         <x-table.cell colspan="2">
-                            <div class="text-sm font-medium text-gray-900">AFTER:</div>
-                            <div class="text-sm text-gray-500">{{ $item->after }}</div>
+                            <div class="text-sm font-medium text-gray-900">Módosított értékek:</div>
+                            @php
+                                $after = (array) json_decode($item->after);
+                            @endphp
+                            @forelse($after as $attribute => $value)
+                                @if($value != $before[$attribute])
+                                <div class="text-sm text-gray-500">
+                                    {{ __($model->{$attribute.'_description'}.": $value") }}
+                                </div>
+                                @endif
+                            @empty
+                            @endforelse
                         </x-table.cell>
                     </x-table.row>
                 @endif

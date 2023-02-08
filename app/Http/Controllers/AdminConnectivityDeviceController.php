@@ -59,12 +59,24 @@ class AdminConnectivityDeviceController extends Controller
 
         // TODO
         // Check if start and end contains the same zone given in their names
-        // Check whether a cable has been connected if the Stripe and Port changes
 
         if (!$this->compareConnectionPoints($attributes['start'], $attributes['end']))
             throw \Illuminate\Validation\ValidationException::withMessages([
                 'start' => ['A kezdő kapcsolati pont nagyobb a végsőnél'],
                 'end' => ['A végső kapcsolati pont kisebb a kezdőnél']
+            ]);
+
+        $end_max = $connectivity_device->cable_pairs->sortBy([['conn_point', 'desc']])->first()?->conn_point;
+        $start_min = $connectivity_device->cable_pairs->sortBy([['conn_point', 'asc']])->first()?->conn_point;
+
+        if (request()->start > $start_min)
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'start' => ['A kezdő kapcsolati pont nagyobb, mint a legkisebb kábelpár kapcsolódási pont']
+            ]);
+
+        if (request()->end < $end_max)
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'end' => ['A végződő kapcsolati pont kisebb, mint a legnagyobb kábelpár kapcsolódási pont']
             ]);
 
         $connectivity_device->update($attributes);
