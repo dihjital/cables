@@ -37,11 +37,14 @@ class CreateCable extends Component
     public string $cableName = '';
     public string $cableComment = '';
 
-    public int $massInsert = 1;
+    public $massInsert = 1;
 
     public function mount() {
         $this->installTime = Carbon::now()->toDateString();
     }
+
+    // Do not allow '' as an entry for this field. It should be always numeric
+    public function updatedMassInsert($value) { $this->massInsert = $value ?: 1; }
 
     public function updatedSelectCDStartCDOwner($value) {
         $this->selectCD['startCDId'] = 0;
@@ -58,6 +61,10 @@ class CreateCable extends Component
     public function updatedSelectCDEndCDId($value) { $this->selectCD['endConnectionPoint'] = ''; }
 
     public function updatedCableTypeId($value) { $this->cableName = $this->generateCableNameHint($value); }
+
+    public function resetStartConnectionPoint() { $this->selectCD['startConnectionPoint'] = ''; }
+
+    public function resetEndConnectionPoint() { $this->selectCD['endConnectionPoint'] = ''; }
 
     protected function generateCableNameHint(int $cableType = 0, string $endCdLocationName = ''): string {
 
@@ -150,7 +157,8 @@ class CreateCable extends Component
 
         $cable = new Cable;
 
-        $cable->name = substr($this->cableName, 1);
+        // $cable->name = substr($this->cableName, 1);
+        $cable->name = $this->cableName;
         $cable->cable_type_id = $this->cableTypeId;
         $cable->start = $this->selectCD['startCDId'];
         $cable->end = $this->selectCD['endCDId'];

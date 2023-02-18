@@ -99,6 +99,7 @@ class ConnectivityDevicesImport implements ToModel, WithValidation, WithHeadingR
             $this->fieldColumnMap['full_name'] => function($attribute, $value, $onFailure) {
                 list($cd_name, $zone_name, $location_name) = $this->splitFullName($value);
                 if (ConnectivityDevice::where('name', $cd_name)
+                        ->withTrashed()
                         ->get()
                         ->filter(function ($item) use ($value) {
                             return $item->full_name === $value;

@@ -8,8 +8,8 @@
 
         @csrf
 
-        <x-modals.import wire:model.defer="showImportModal">
-            <x-slot name="title">Kapcsolati eszközök betöltése</x-slot>
+        <x-modals.import wire:model.defer="showImportModal" wire:key="key-showImportModal">
+            <x-slot name="title">Kábelek betöltése</x-slot>
             <x-slot name="body">
                 @unless($upload)
                 <p class="text-sm text-gray-500 break-normal">Válassza ki a betölteni kívánt állományt a gépéről. Az állománynak az
@@ -42,6 +42,19 @@
                         </x-forms.import-select>
                         <x-forms.import-select>
                             <x-slot name="label">
+                                <x-forms.label name="fieldColumnMap.startCD" :label="__('Kezdőeszköz')"></x-forms.label>
+                            </x-slot>
+                            <x-slot name="select">
+                                <x-forms.select wire:model="fieldColumnMap.startCD" name="fieldColumnMap.startCD">
+                                    <option wire:key="key-startCD" value="" disabled selected>Kérem válasszon!</option>
+                                    @foreach($columns[0][0] as $column)
+                                        <option wire:key="key-startCD-{{ $loop->index }}">{{ $column }}</option>
+                                    @endforeach
+                                </x-forms.select>
+                            </x-slot>
+                        </x-forms.import-select>
+                        <x-forms.import-select>
+                            <x-slot name="label">
                                 <x-forms.label name="fieldColumnMap.start" :label="__('Kezdőpont')"></x-forms.label>
                             </x-slot>
                             <x-slot name="select">
@@ -49,6 +62,19 @@
                                     <option wire:key="key-start" value="" disabled selected>Kérem válasszon!</option>
                                     @foreach($columns[0][0] as $column)
                                         <option wire:key="key-start-{{ $loop->index }}">{{ $column }}</option>
+                                    @endforeach
+                                </x-forms.select>
+                            </x-slot>
+                        </x-forms.import-select>
+                        <x-forms.import-select>
+                            <x-slot name="label">
+                                <x-forms.label name="fieldColumnMap.endCD" :label="__('Végeszköz')"></x-forms.label>
+                            </x-slot>
+                            <x-slot name="select">
+                                <x-forms.select wire:model="fieldColumnMap.endCD" name="fieldColumnMap.endCD">
+                                    <option wire:key="key-endCD" value="" disabled selected>Kérem válasszon!</option>
+                                    @foreach($columns[0][0] as $column)
+                                        <option wire:key="key-endCD-{{ $loop->index }}">{{ $column }}</option>
                                     @endforeach
                                 </x-forms.select>
                             </x-slot>
@@ -68,26 +94,39 @@
                         </x-forms.import-select>
                         <x-forms.import-select>
                             <x-slot name="label">
-                                <x-forms.label name="type" :label="__('Típus')"></x-forms.label>
+                                <x-forms.label name="fieldColumnMap.i_time" :label="__('Telepítés dátuma')"></x-forms.label>
                             </x-slot>
                             <x-slot name="select">
-                                <x-forms.select wire:model="fieldColumnMap.connectivity_device_type" name="connectivity_device_type">
-                                    <option wire:key="key-connectivity_device_type" value="" disabled selected>Kérem válasszon!</option>
+                                <x-forms.select wire:model="fieldColumnMap.i_time" name="fieldColumnMap.i_time">
+                                    <option wire:key="key-i_time" value="" disabled selected>Kérem válasszon!</option>
                                     @foreach($columns[0][0] as $column)
-                                        <option wire:key="key-connectivity_device_type-{{ $loop->index }}">{{ $column }}</option>
+                                        <option wire:key="key-i_time-{{ $loop->index }}">{{ $column }}</option>
                                     @endforeach
                                 </x-forms.select>
                             </x-slot>
                         </x-forms.import-select>
                         <x-forms.import-select>
                             <x-slot name="label">
-                                <x-forms.label name="owner" :label="__('Tulajdonos')"></x-forms.label>
+                                <x-forms.label name="fieldColumnMap.status" :label="__('Állapot')"></x-forms.label>
                             </x-slot>
                             <x-slot name="select">
-                                <x-forms.select wire:model="fieldColumnMap.owner" name="owner">
-                                    <option wire:key="key-owner" value="" disabled selected>Kérem válasszon!</option>
+                                <x-forms.select wire:model="fieldColumnMap.status" name="fieldColumnMap.status">
+                                    <option wire:key="key-status" value="" disabled selected>Kérem válasszon!</option>
                                     @foreach($columns[0][0] as $column)
-                                        <option wire:key="key-owner-{{ $loop->index }}">{{ $column }}</option>
+                                        <option wire:key="key-status-{{ $loop->index }}">{{ $column }}</option>
+                                    @endforeach
+                                </x-forms.select>
+                            </x-slot>
+                        </x-forms.import-select>
+                        <x-forms.import-select>
+                            <x-slot name="label">
+                                <x-forms.label name="fieldColumnMap.purpose" :label="__('Felhasználás módja')"></x-forms.label>
+                            </x-slot>
+                            <x-slot name="select">
+                                <x-forms.select wire:model="fieldColumnMap.purpose" name="fieldColumnMap.purpose">
+                                    <option wire:key="key-purpose" value="" disabled selected>Kérem válasszon!</option>
+                                    @foreach($columns[0][0] as $column)
+                                        <option wire:key="key-purpose-{{ $loop->index }}">{{ $column }}</option>
                                     @endforeach
                                 </x-forms.select>
                             </x-slot>

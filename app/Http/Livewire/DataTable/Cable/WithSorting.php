@@ -4,8 +4,8 @@ namespace App\Http\Livewire\DataTable\Cable;
 
 trait WithSorting {
 
-    public $sortField;
-    public $sortDirection = 'asc';
+    public $sortField = 'i_time';
+    public $sortDirection = 'desc';
 
     public function sortBy($field) {
 

@@ -107,7 +107,10 @@ class Cable extends Model
                 ?->full_name;
 
         return $cable_name
-            ? substr($cable_name, 0, 1).(substr($cable_name, 1) + 1)
+            // with full name
+            // ? substr($cable_name, 0, 1).(substr($cable_name, 1) + 1)
+            // without full name
+            ? substr($cable_name, 1) + 1
             : '';
 
     }

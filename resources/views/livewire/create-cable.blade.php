@@ -134,59 +134,75 @@
 
                             <div class="col-span-6 sm:col-span-3" wire:key="startCablePairsList">
                                 <label for="selectCD[startConnectionPoint]" class="block text-sm font-medium text-gray-700">Kezdő kapcsolati pont</label>
-                                <select id="selectCD[startConnectionPoint]"
-                                        name="selectCD[startConnectionPoint]"
-                                        wire:model="selectCD.startConnectionPoint"
-                                        class="mt-1 block w-full rounded-md
-                                               border border-gray-300 bg-white
-                                               py-2 px-3 shadow-sm
-                                               focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
-                                               sm:text-sm">
-                                    <option value="" disabled>Kérem válasszon</option>
-                                    @forelse($startCablePairsList as $cablePair)
-                                    <option wire:key="key-startCablePairsList-{{ $loop->index }}"
-                                            value="{{ $cablePair->conn_point }}"
-                                            @if ($selectCD['startConnectionPoint'] === $cablePair->conn_point || $cablePair->status === 'Free')
-                                                selected
-                                            @endif
-                                            @if ($cablePair->status !== 'Free')
-                                                disabled
-                                            @endif
-                                    >
-                                        {{ $cablePair->conn_point }} <small>{{ $cablePair->status }}</small>
-                                    </option>
-                                    @empty
-                                    @endforelse
-                                </select>
+                                <div class="flex">
+                                    <button type="button" wire:click="resetStartConnectionPoint()"
+                                            class="mt-1 inline-flex items-center py-2 px-2.5
+                                                   bg-red-500 hover:bg-red-600 text-white text-xs rounded-l-md
+                                                   border border-r-0 border-red-500">
+                                        <i class="fas fa-trash fa-sm" aria-hidden="true" title="Reset"></i>
+                                    </button>
+                                    <select id="selectCD[startConnectionPoint]"
+                                            name="selectCD[startConnectionPoint]"
+                                            wire:model="selectCD.startConnectionPoint"
+                                            class="mt-1 w-full rounded-none rounded-r-lg block flex-1
+                                                   border border-gray-300 bg-white
+                                                   py-2 px-3 shadow-sm
+                                                   focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
+                                                   sm:text-sm">
+                                        <option value="" disabled>Kérem válasszon</option>
+                                        @forelse($startCablePairsList as $cablePair)
+                                        <option wire:key="key-startCablePairsList-{{ $loop->index }}"
+                                                value="{{ $cablePair->conn_point }}"
+                                                @if ($selectCD['startConnectionPoint'] === $cablePair->conn_point || $cablePair->status === 'Free')
+                                                    selected
+                                                @endif
+                                                @if ($cablePair->status !== 'Free')
+                                                    disabled
+                                                @endif
+                                        >
+                                            {{ $cablePair->conn_point }} <small>{{ $cablePair->status }}</small>
+                                        </option>
+                                        @empty
+                                        @endforelse
+                                    </select>
+                                </div>
                                 <x-input-error :messages="$errors->get('selectCD.startConnectionPoint')" class="mt-2" />
                             </div>
 
                             <div class="col-span-6 sm:col-span-3" wire:key="endCablePairsList">
                                 <label for="selectCD[endConnectionPoint]" class="block text-sm font-medium text-gray-700">Végződő kapcsolati pont</label>
-                                <select id="selectCD[endConnectionPoint]"
-                                        name="selectCD[endConnectionPoint]"
-                                        wire:model="selectCD.endConnectionPoint"
-                                        class="mt-1 block w-full rounded-md
+                                <div class="flex">
+                                    <button type="button" wire:click="resetEndConnectionPoint()"
+                                            class="mt-1 inline-flex items-center py-2 px-2.5
+                                                   bg-red-500 hover:bg-red-600 text-white text-xs rounded-l-md
+                                                   border border-r-0 border-red-500">
+                                        <i class="fas fa-trash fa-sm" aria-hidden="true" title="Reset"></i>
+                                    </button>
+                                    <select id="selectCD[endConnectionPoint]"
+                                            name="selectCD[endConnectionPoint]"
+                                            wire:model="selectCD.endConnectionPoint"
+                                            class="mt-1 w-full rounded-none rounded-r-lg block flex-1
                                                    border border-gray-300 bg-white
                                                    py-2 px-3 shadow-sm
                                                    focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                    sm:text-sm">
-                                    <option value="" disabled>Kérem válasszon</option>
-                                    @forelse($endCablePairsList as $cablePair)
-                                    <option wire:key="key-endCablePairsList-{{ $loop->index }}"
-                                            value="{{ $cablePair->conn_point }}"
-                                            @if ($selectCD['endConnectionPoint'] === $cablePair->conn_point || $cablePair->status === 'Free')
-                                                selected
-                                            @endif
-                                            @if ($cablePair->status !== 'Free')
-                                                disabled
-                                            @endif
-                                    >
-                                        {{ $cablePair->conn_point }} <sub>{{ $cablePair->status }}</sub>
-                                    </option>
-                                    @empty
-                                    @endforelse
-                                </select>
+                                        <option value="" disabled>Kérem válasszon</option>
+                                        @forelse($endCablePairsList as $cablePair)
+                                        <option wire:key="key-endCablePairsList-{{ $loop->index }}"
+                                                value="{{ $cablePair->conn_point }}"
+                                                @if ($selectCD['endConnectionPoint'] === $cablePair->conn_point || $cablePair->status === 'Free')
+                                                    selected
+                                                @endif
+                                                @if ($cablePair->status !== 'Free')
+                                                    disabled
+                                                @endif
+                                        >
+                                            {{ $cablePair->conn_point }} <sub>{{ $cablePair->status }}</sub>
+                                        </option>
+                                        @empty
+                                        @endforelse
+                                    </select>
+                                </div>
                                 <x-input-error :messages="$errors->get('selectCD.endConnectionPoint')" class="mt-2" />
                             </div>
 
@@ -270,16 +286,16 @@
                             <div class="col-span-6 sm:col-span-3" wire:key="cableName">
                                 <label for="cableName" class="block text-sm font-medium text-gray-700">{{ __('Kábel neve*') }}</label>
                                 <div class="flex">
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
-                                        {{ substr($cableName, 0, 1) ?: '?' }}
+                                    <span class="mt-1 inline-flex items-center px-3 py-2 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
+                                        {{ \App\Models\CableType::whereKey($cableTypeId)?->get('abbreviation')->first()?->abbreviation ?: '?' }}
                                     </span>
                                     <input type="text"
                                            name="cableName"
                                            id="cableName"
                                            wire:model="cableName"
-                                           class="rounded-none rounded-r-lg border text-gray-900
+                                           class="mt-1 rounded-none rounded-r-lg border text-gray-900
                                               focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full
-                                              text-sm border-gray-300 p-2.5">
+                                              text-sm border-gray-300 py-2">
                                 </div>
                                 <x-input-error :messages="$errors->get('cableName')" class="mt-2" />
                             </div>
@@ -312,22 +328,22 @@
 
                             <div class="col-span-6 sm:col-span-3 lg:col-span-6" wire:key="massInsert">
                                 <label for="massInsert" class="block text-sm font-medium text-gray-700">Rögzítendő kábelek száma?</label>
-                                <input type="text"
+                                <input type="number"
                                        name="massInsert"
                                        id="massInsert"
                                        wire:model="massInsert"
-                                       placeholder="0"
-                                       size="2"
-                                       maxlength="2"
+                                       min="1"
+                                       max="99"
                                        class="mt-1 block w-1/12 rounded-md border-gray-300 shadow-sm
                                               focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <x-input-error :messages="$errors->get('massInsert')" class="mt-2" />
                             </div>
 
-                            </div>
+                        </div>
                     </div>
                     <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                         <x-primary-button>{{ __('Rögzítés') }}</x-primary-button>
-                        <x-secondary-button class="ml-2" action="{{ route('cables.index') }}">{{ __('Mégsem') }}</x-secondary-button>
+                        <x-secondary-button class="ml-2"><a href="{{ route('cables.index') }}">{{ __('Mégsem') }}</a></x-secondary-button>
                     </div>
                 </div>
 

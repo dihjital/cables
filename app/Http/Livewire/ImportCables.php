@@ -2,47 +2,60 @@
 
 namespace App\Http\Livewire;
 
-use App\Imports\ConnectivityDevicesImport;
+use App\Imports\CablesImport;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 
-use \Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
-class ImportConnectivitydevices extends Component
+class ImportCables extends Component
 {
 
     use WithFileUploads;
 
-    public $showImportModal = false;
+    public bool $showImportModal = false;
     public $upload;
     public $columns;
+
     public array $fieldColumnMap = [
         'full_name' => '',
+        'startCD' => '',
         'start' => '',
+        'endCD' => '',
         'end' => '',
-        'connectivity_device_type' => '',
-        'owner' => ''
+        'i_time' => '',
+        'status' => '',
+        'purpose' => ''
     ];
 
     public array $importFailures = [];
 
     protected array $rules = [
         'fieldColumnMap.full_name' => 'required',
+        'fieldColumnMap.startCD' => 'required',
         'fieldColumnMap.start' => 'required',
-        'fieldColumnMap.end' => 'required'
+        'fieldColumnMap.endCD' => 'required',
+        'fieldColumnMap.end' => 'required',
+        'fieldColumnMap.status' => 'required',
+        'fieldColumnMap.purpose' => 'required'
     ];
 
-    protected array $attributes = [
-        'fieldColumnMap.full_name' => 'Teljes név',
+    protected array $messages = [
+        'required' => 'A(z) :attribute mező megadása kötelező.',
+    ];
+
+    // for some reason if I change the visibility to protected this will not work
+    public array $attributes = [
+        'fieldColumnMap.full_name' => 'Név',
+        'fieldColumnMap.startCD' => 'Kezdő kapcsolati eszköz',
         'fieldColumnMap.start' => 'Kezdőpont',
-        'fieldColumnMap.end' => 'Végpont'
+        'fieldColumnMap.endCD' => 'Végződő kapcsolati eszköz',
+        'fieldColumnMap.end' => 'Végpont',
+        'fieldColumnMap.status' => 'Kábelpár állapota',
+        'fieldColumnMap.purpose' => 'Felhasználási mód'
     ];
-
-    // This is required since the input fields are emitting up their actions to the parent model ...
-    public function updatedShowImportModal($value) {
-        if ($value === '') $this->showImportModal = true;
-    }
 
     public function toggleModal() {
         $this->showImportModal = ! $this->showImportModal;
@@ -60,12 +73,11 @@ class ImportConnectivitydevices extends Component
                 'max' => 'Maximum állomány méret 10k.'
             ]
         )->validate();
-
     }
 
     public function updatedUpload() {
 
-        $this->columns = (new ConnectivityDevicesImport())
+        $this->columns = (new CablesImport())
                             ->import($this->upload->getRealPath());
 
         $this->guessWhichColumnsMapToWhichFields();
@@ -74,18 +86,18 @@ class ImportConnectivitydevices extends Component
 
     public function import() {
 
-        $this->validate();
+        $this->validate($this->rules, $this->messages, $this->attributes);
 
-        $cdImport = new ConnectivityDevicesImport();
+        $cablesImport = new CablesImport();
 
         try {
 
-            $cdImport->setFieldColumnMap($this->fieldColumnMap);
-            Excel::import($cdImport, $this->upload->getRealPath());
+            $cablesImport->setFieldColumnMap($this->fieldColumnMap);
+            Excel::import($cablesImport, $this->upload->getRealPath());
 
             $this->toggleModal();
 
-            $this->emitUp('showEmittedFlashMessage', ($cdImport->getRowNumber() - 1).' db. kapcsolati eszköz betöltése sikerült!');
+            $this->emitUp('showEmittedFlashMessage', $cablesImport->getRowNumber().' db. kábel betöltése sikerült!');
 
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $this->importFailures = $e->failures();
@@ -97,10 +109,13 @@ class ImportConnectivitydevices extends Component
 
         $guesses = [
             'full_name' => ['teljes_nev', 'teljesnev', 'Teljes név', 'Teljes nev'],
+            'startCD' => ['startCD', 'kezdo_eszkoz', 'Kezdő kapcsolati eszköz'],
             'start' => ['start', 'Kezdőpont', 'kezdopont'],
+            'endCD' => ['endCD', 'vegzodo_eszkoz', 'Kezdő kapcsolati eszköz'],
             'end' => ['end', 'Végpont', 'vegpont'],
-            'connectivity_device_type' => ['Típus', 'tipus'],
-            'owner' => ['Tulajdonos', 'tulajdonos']
+            'i_time' => ['i_time', 'telepites_datuma', 'Telepítés dátuma', 'Telepítés időpontja'],
+            'status' => ['status', 'allapot', 'Állapot', 'Kábelpár státusza', 'Státusz'],
+            'purpose' => ['purpose', 'felhasznalas', 'Felhasználási mód', 'Mód']
         ];
 
         foreach ($this->columns[0][0] as $column) {

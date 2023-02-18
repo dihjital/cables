@@ -53,24 +53,27 @@ class ManageConnectivitydevice extends Component
 
         // TODO: A selectedItems alapértelmezésbe állítása lehet másképpen is?
         // Ha nem töröltünk egyetlen rekordot sem, akkor nem kell a flash message ...
+
+        $deleteCount = 0;
+
         if (count($this->selectedItems) > 0) {
             (clone $this->rowsQuery)
                 ->unless($this->selectAll, fn($query) => $query->whereKey($this->selectedItems))
                 ->reorder()
                 ->orderBy('id', 'asc')
-                ->chunkById(100, function ($rows) {
-                    $rows->filter(function ($row) {
+                ->chunkById(100, function ($rows) use (&$deleteCount) {
+                    $deleteCount = count($rows->filter(function ($row) {
                         return $row->cable_count === 0;
-                    })->map->delete();
+                    })->map->delete());
                 });
             $this->selectedItems = [];
         } elseif ($this->current_cd->cable_count === 0) {
-            $this->current_cd->delete();
+            $deleteCount = $this->current_cd->delete();
         }
 
         $this->showDeleteModal = false;
 
-        session()->flash('success', 'A kiválasztott kapcsolati eszköz(ök) sikeresen törlésre kerültek');
+        session()->flash('success', "$deleteCount db. kapcsolati eszköz sikeresen törlésre került");
 
     }
 

@@ -8,6 +8,7 @@ use App\Http\Livewire\DataTable\Cable\WithFiltering;
 use App\Http\Livewire\DataTable\Cable\WithPerPagePagination;
 use App\Http\Livewire\DataTable\Cable\WithSorting;
 use App\Models\Cable;
+use App\Models\CablePair;
 use Livewire\Component;
 
 class ManageCable extends Component
@@ -16,6 +17,7 @@ class ManageCable extends Component
     use WithPerPagePagination, WithFiltering, WithBulkActions, WithCachedRows, WithSorting;
 
     public bool $showCommentModal = false;
+    public bool $showDeleteModal = false;
 
     public Cable $currentCable;
 
@@ -28,8 +30,57 @@ class ManageCable extends Component
         'currentCable.comment' => 'string|max:255',
     ];
 
+    protected $listeners = [
+        'showEmittedFlashMessage'
+    ];
+
+    public function showEmittedFlashMessage($message) {
+        session()->flash('success', $message);
+    }
+
     public function mount() {
         $this->currentCable = new Cable();
+    }
+
+    public function confirmDelete (Cable $cable) {
+
+        $this->currentCable = $cable ?? null;
+        $this->showDeleteModal = true;
+
+    }
+
+    public function delete() {
+
+        // TODO: A selectedItems alapértelmezésbe állítása lehet másképpen is?
+        // Ha nem töröltünk egyetlen rekordot sem, akkor nem kell a flash message ...
+
+        // Ki kell törölni a kábelpárok közül is a kábeleket ...
+
+        $deleteCount = 0;
+
+        if (count($this->selectedItems) > 0) {
+            (clone $this->rowsQuery)
+                ->unless($this->selectAll, fn($query) => $query->whereKey($this->selectedItems))
+                ->reorder()
+                ->orderBy('id', 'asc')
+                ->chunkById(100, function ($rows) use (&$deleteCount) {
+                    $deleteCount = count($rows->filter(function ($row) {
+                        if ($row->status !== 'In use') {
+                            CablePair::query()->where('cable_id', $row->id)->delete();
+                            return true;
+                        }
+                    })->map->delete());
+                });
+            $this->selectedItems = [];
+        } elseif ($this->currentCable->status !== 'In use') {
+            $deleteCount = $this->currentCable->delete();
+            CablePair::query()->where('cable_id', $this->currentCable->id)->delete();
+        }
+
+        $this->showDeleteModal = false;
+
+        session()->flash('success', "$deleteCount db. kábel sikeresen törlésre került");
+
     }
 
     public function save() {

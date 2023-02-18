@@ -22,18 +22,20 @@ trait WithValidation {
 
     protected array $messages = [
         'required' => ':attribute mező megadása kötelező.',
-        'min'      => ':attribute moet minimaal :min karakters bevatten.',
-        'numeric'  => ':attribute mag alleen cijfers bevatten.',
-        'unique'   => ':attribute moet uniek zijn.',
-        'max'      => ':attribute mag maximaal :max zijn.',
-        'numeric'  => ':attribute is geen geldig getal.',
-        'size'     => ':attribute is te groot of bevat te veel karakters.'
+        'min'      => ':attribute kisebb, mint a minimum (:min).',
+        'numeric'  => ':attribute nem szám.',
+        'unique'   => ':attribute nem egyedi.',
+        'max'      => ':attribute meghaladja a maximumot (:max).',
+        'size'     => ':attribute nagyobb, mint a megengedett méret.',
+        'exists'   => ':attribute nem létezik az adatbázisban.',
+        'required_without'  => ':attribute beállítása kötelező, amennyiben :values nincsen megadva.',
+        'prohibited_if' => ':attribute nem lehet megadva, amennyiben a kábelpár státusza Spare (:value)'
     ];
 
-    public function prepareForValidation($attributes) {
-        $attributes['cableName'] = substr($this->cableName, 1);
-        return $attributes;
-    }
+    // public function prepareForValidation($attributes) {
+    //    $attributes['cableName'] = substr($this->cableName, 1);
+    //    return $attributes;
+    // }
 
     public function validateSave() {
 
@@ -86,6 +88,10 @@ trait WithValidation {
             'cablePairStatusId' => [
                 'required',
                 Rule::exists('cable_pair_statuses', 'id')
+            ],
+            'massInsert' => [
+                'required',
+                'numeric'
             ]
         ], $this->messages, $this->attributes);
 

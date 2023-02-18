@@ -103,10 +103,10 @@
                     </x-table.cell>
                     <x-table.cell>
                         @php
-                            $model = $item->model_type::find($item->model_id)
+                            $model = $item->model_type::withTrashed()->find($item->model_id)
                         @endphp
                         <div class="text-sm font-medium text-gray-900">
-                            {{ $model->full_name ? $model->full_name : $model->name }}
+                            {{ $model->full_name ?: $model->name }}
                         </div>
                         <div class="text-sm text-gray-500">
                             {{ $item->model_type }}
