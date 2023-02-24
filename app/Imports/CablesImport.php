@@ -8,17 +8,16 @@ use App\Models\CablePairStatus;
 use App\Models\CablePurpose;
 use App\Models\CableType;
 use App\Models\ConnectivityDevice;
-use App\Models\Location;
-use App\Models\LocationZone;
-use App\Models\Zone;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use App\Imports\Cable\WithCablesImportValidation;
 
 class CablesImport implements WithValidation, WithHeadingRow, ToCollection {
+
+    use WithCablesImportValidation;
 
     protected array $fieldColumnMap = [];
     protected int $rowsImported = 0;
@@ -33,45 +32,6 @@ class CablesImport implements WithValidation, WithHeadingRow, ToCollection {
 
     public function getRowNumber(): int {
         return $this->rowsImported;
-    }
-
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    // public function model(array $row)
-    // {
-    //    return new Cable($this->prepareAttributes($row));
-    // }
-
-    protected function validateConnectionPoint (?string $connectivityDevice = '', ?string $connectionPoint = ''): bool {
-        if (!$connectionPoint) return true;
-        if (!$connectivityDevice) return false;
-        return in_array($connectionPoint,
-            ConnectivityDevice::query()->getByFullName($connectivityDevice)?->first()->calculateCdRange());
-    }
-
-    public function withValidator($validator) {
-
-        $validator->after(function ($validator) {
-
-            $rowNumber = 2; // 1. row is the header row
-
-            foreach ($validator->getData() as $row) {
-                if (!$this->validateConnectionPoint(
-                        $row[$this->fieldColumnMap['startCD']],
-                        $row[$this->fieldColumnMap['start']]
-                    ))
-                    $validator
-                        ->errors()
-                        ->add("$rowNumber.".$this->fieldColumnMap['start'],
-                                'Nincsen ilyen kapcsolati pontja a kapcsolati eszköznek');
-                $rowNumber++;
-            }
-
-        });
-
     }
 
     public function collection(Collection $rows) {
@@ -168,97 +128,6 @@ class CablesImport implements WithValidation, WithHeadingRow, ToCollection {
 
         return collect($cables);
 
-    }
-
-    /**
-     * @param string $full_name
-     *
-     * @return array [cableType, cableName]
-     */
-    private function splitFullName(?string $full_name): ?array {
-        return [
-            substr($full_name, 0, 1),
-            substr($full_name, 1)
-        ];
-    }
-
-    /**
-     * @param string $full_name
-     *
-     * @return array [cd_name, zone_name, location_name]
-     */
-    private function splitCDFullName(?string $full_name): ?array {
-        return [
-            substr($full_name, -3),
-            substr($full_name, 0, 2),
-            substr($full_name, 3, 3)
-        ];
-    }
-
-    public function rules(): array
-    {
-        // TODO: rewrite to check if zone and location exists in LocationZone model
-        // a full_name ellenőrzése szintén átgondolást igényel
-        // azt kell megnézni, hogy ilyen cd name zone id es location id létezik-e a connection devices táblában
-        // azt is ellenőrizni kell, hogy ez a pont már megvan-e adva a cable_pairs táblában ...
-        // ellenőrizni kell, hogy a státusz függvényében
-        // spare esetében sem kezdő, sem pedig végpont nem lehet megadva
-        // a többi esetben pedig meg kell, hogy legalább az egyik pont adva
-
-        return [
-            $this->fieldColumnMap['full_name'] => function($attribute, $value, $onFailure) {
-                list($cableType, $cableName) = $this->splitFullName($value);
-                if (Cable::where('name', $cableName)
-                        ->withTrashed()
-                        ->get()
-                        ->filter(function ($item) use ($value) {
-                            return $item->full_name === $value;
-                        })->count())
-                        $onFailure('A kábel már létezik a rendszer adatbázisában');
-            },
-            $this->fieldColumnMap['startCD'] => function($attribute, $value, $onFailure) {
-                list($cd_name, $zone_name, $location_name) = $this->splitCDFullName($value);
-                if (!ConnectivityDevice::where('name', $cd_name)
-                    ->get()
-                    ->filter(function ($item) use ($value) {
-                        return $item->full_name === $value;
-                    })->count())
-                    $onFailure('Nincsen ilyen kapcsolati eszköz');
-                if (!Zone::firstWhere('name', $zone_name) ||
-                    !Location::firstWhere('name', $location_name) ||
-                    !LocationZone::query()
-                        ->where('location_id', Location::firstWhere('name', $location_name)->id)
-                        ->where('zone_id', Zone::firstWhere('name', $zone_name)->id)->count()) {
-                    $onFailure('Nincsen ilyen zóna vagy lokáció vagy nincsenek összerendelve!');
-                }
-            },
-            $this->fieldColumnMap['start'] => [
-                'nullable',
-               'regex:/^Z([0-9]{3})S([0-9]{2})P([0-9]{3})$/si'
-            ],
-            $this->fieldColumnMap['endCD'] => function($attribute, $value, $onFailure) {
-                list($cd_name, $zone_name, $location_name) = $this->splitCDFullName($value);
-                if (!ConnectivityDevice::where('name', $cd_name)
-                    ->get()
-                    ->filter(function ($item) use ($value) {
-                        return $item->full_name === $value;
-                    })->count())
-                    $onFailure('Nincsen ilyen kapcsolati eszköz');
-                if (!Zone::firstWhere('name', $zone_name) ||
-                    !Location::firstWhere('name', $location_name) ||
-                    !LocationZone::query()
-                        ->where('location_id', Location::firstWhere('name', $location_name)->id)
-                        ->where('zone_id', Zone::firstWhere('name', $zone_name)->id)->count()) {
-                    $onFailure('Nincsen ilyen zóna vagy lokáció vagy nincsenek összerendelve!');
-                }
-            },
-            $this->fieldColumnMap['end'] => [
-                'nullable',
-                'regex:/^Z([0-9]{3})S([0-9]{2})P([0-9]{3})$/si'
-            ],
-            $this->fieldColumnMap['status'] => Rule::exists('cable_pair_statuses', 'name'),
-            $this->fieldColumnMap['purpose'] => Rule::exists('cable_purposes', 'name')
-        ];
     }
 
     public function import(string $file_path): ?array {

@@ -8,7 +8,7 @@
 
         @csrf
 
-        <x-modals.import wire:model.defer="showImportModal">
+        <x-modals.import model="showImportModal">
             <x-slot name="title">Kapcsolati eszközök betöltése</x-slot>
             <x-slot name="body">
                 @unless($upload)

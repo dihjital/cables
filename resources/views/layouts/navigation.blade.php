@@ -18,7 +18,7 @@
                     <x-nav-link :href="route('connectivity_device.index')" :active="request()->routeIs('connectivity_device.*')">
                         {{ __('Kapcsolati eszközök') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('zones')" :active="request()->routeIs('zones')">
+                    <x-nav-link :href="route('zones.index')" :active="request()->routeIs('zones.*')">
                         {{ __('Zónák') }}
                     </x-nav-link>
                     <x-nav-link :href="route('locations')" :active="request()->routeIs('locations')">

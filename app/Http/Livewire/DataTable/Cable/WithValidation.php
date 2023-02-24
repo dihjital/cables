@@ -25,9 +25,9 @@ trait WithValidation {
         'min'      => ':attribute kisebb, mint a minimum (:min).',
         'numeric'  => ':attribute nem szám.',
         'unique'   => ':attribute nem egyedi.',
-        'max'      => ':attribute meghaladja a maximumot (:max).',
+        'max'      => 'A(z) :attribute mező mérete meghaladja a megengedett maximumot (:max).',
         'size'     => ':attribute nagyobb, mint a megengedett méret.',
-        'exists'   => ':attribute nem létezik az adatbázisban.',
+        'exists'   => 'A(z) :attribute érték nem létezik az adatbázisban.',
         'required_without'  => ':attribute beállítása kötelező, amennyiben :values nincsen megadva.',
         'prohibited_if' => ':attribute nem lehet megadva, amennyiben a kábelpár státusza Spare (:value)'
     ];

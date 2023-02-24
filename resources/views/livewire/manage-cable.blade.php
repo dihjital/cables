@@ -46,11 +46,11 @@
     </div>
 
     <div class="flex flex-row flow-root">
-        <div class="md:flex md:items-center">
-            <div class="md:w-1/12">
+        <div class="flex items-center">
+            <div class="w-1/12">
                 <x-forms.label name="pageSize" label="Page Size:" />
             </div>
-            <div class="md:w-1/12 mr-4">
+            <div class="w-1/12 mr-4">
                 <x-forms.select name="pageSize" wire:model="pageSize">
                     <option value="10">10</option>
                     <option value="25">25</option>
@@ -62,7 +62,7 @@
                 $cablePairStatuses = \App\Models\CablePairStatus::all();
             @endphp
 
-            <div class="float-right md:flex md:w-6/12 inline-flex rounded-md justify-end" role="group">
+            <div class="w-full float-right inline-flex rounded-md justify-end" role="group">
             @foreach ($cablePairStatuses as $status)
                 <button type="button"
                         wire:click="$set('search.status', {{ $status->id }})"

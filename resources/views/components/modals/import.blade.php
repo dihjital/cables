@@ -1,4 +1,5 @@
-<div x-data="{ show: @entangle($attributes->wire('model')) }"
+<div {{ $attributes }}
+     x-data="{ show: @entangle($attributes->get('model')) }"
      x-show="show"
      @keydown.escape.window="show = false"
      style="display: none"

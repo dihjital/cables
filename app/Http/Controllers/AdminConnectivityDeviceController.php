@@ -9,6 +9,24 @@ use Illuminate\Validation\Rule;
 class AdminConnectivityDeviceController extends Controller
 {
 
+    protected array $attributes = [
+        'name' => 'Rövid név',
+        'zone_id' => 'Zóna',
+        'location_id' => 'Lokáció',
+        'start' => 'Kezdőpont',
+        'end' => 'Végpont',
+        'owner_id' => 'Tulajdonos',
+        'connectivity_device_type_id' => 'Kapcsolati eszköz típusa'
+    ];
+
+    protected array $messages = [
+        'required'  => 'A(z) :attribute megadása kötelező.',
+        'regex'     => 'A(z) :attribute mező nem megfelelő formátumú.',
+        'max'       => 'A(z) :attribute mező mérete meghaladja a megengedett maximumot (:max).',
+        'exists'    => 'A(z) :attribute érték nem létezik az adatbázisban.',
+        'unique'    => 'A megadott :attribute már létezik a rendszerben.'
+    ];
+
     public function index () {
         return view('admin.connectivitydevices.index');
     }
@@ -66,8 +84,21 @@ class AdminConnectivityDeviceController extends Controller
                 'end' => ['A végső kapcsolati pont kisebb a kezdőnél']
             ]);
 
-        $end_max = $connectivity_device->cable_pairs->sortBy([['conn_point', 'desc']])->first()?->conn_point;
-        $start_min = $connectivity_device->cable_pairs->sortBy([['conn_point', 'asc']])->first()?->conn_point;
+        $end_max = $connectivity_device
+            ->cable_pairs
+            ->filter(function ($value, $key) {
+                return $value->conn_point !== '';
+            })
+            ->sortBy([['conn_point', 'desc']])
+            ->first()?->conn_point;
+
+        $start_min = $connectivity_device
+            ->cable_pairs
+            ->filter(function ($value, $key) {
+                return $value->conn_point !== '';
+            })
+            ->sortBy([['conn_point', 'asc']])
+            ->first()?->conn_point;
 
         if (request()->start > $start_min)
             throw \Illuminate\Validation\ValidationException::withMessages([
@@ -81,7 +112,7 @@ class AdminConnectivityDeviceController extends Controller
 
         $connectivity_device->update($attributes);
 
-        return redirect(request()->url)->with('success', 'Kapcsolati eszköz módosítása sikeres');
+        return redirect('/admin/connectivity_devices')->with('success', 'Kapcsolati eszköz módosítása sikeres');
 
     }
 
@@ -123,7 +154,7 @@ class AdminConnectivityDeviceController extends Controller
                 'required',
                 Rule::exists('connectivity_device_types', 'id')
             ]
-        ]);
+        ], $this->messages, $this->attributes);
 
         // TODO
         // Check if start and end contains the same zone given in their names

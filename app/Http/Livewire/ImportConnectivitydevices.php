@@ -39,10 +39,7 @@ class ImportConnectivitydevices extends Component
         'fieldColumnMap.end' => 'Végpont'
     ];
 
-    // This is required since the input fields are emitting up their actions to the parent model ...
-    public function updatedShowImportModal($value) {
-        if ($value === '') $this->showImportModal = true;
-    }
+    public function updatedShowImportModal($value) { if (!$value) $this->reset(); }
 
     public function toggleModal() {
         $this->showImportModal = ! $this->showImportModal;

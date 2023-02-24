@@ -53,9 +53,12 @@ class ImportCables extends Component
         'fieldColumnMap.start' => 'Kezdőpont',
         'fieldColumnMap.endCD' => 'Végződő kapcsolati eszköz',
         'fieldColumnMap.end' => 'Végpont',
+        'fieldColumnMap.i_time' => 'Telepítés dátuma',
         'fieldColumnMap.status' => 'Kábelpár állapota',
         'fieldColumnMap.purpose' => 'Felhasználási mód'
     ];
+
+    public function updatedShowImportModal($value) { if (!$value) $this->reset(); }
 
     public function toggleModal() {
         $this->showImportModal = ! $this->showImportModal;
@@ -70,7 +73,7 @@ class ImportCables extends Component
             ['upload' => 'required|mimes:txt,csv|max:10'], [
                 'required' => 'A(z) :attribute mező megadása kötelező.',
                 'mimes' => 'Csak .txt vagy .csv állomány feltöltése lehetséges.',
-                'max' => 'Maximum állomány méret 10k.'
+                'max' => 'Az állomány maximális mérete 10k.'
             ]
         )->validate();
     }

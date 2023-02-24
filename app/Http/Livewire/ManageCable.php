@@ -54,8 +54,6 @@ class ManageCable extends Component
         // TODO: A selectedItems alapértelmezésbe állítása lehet másképpen is?
         // Ha nem töröltünk egyetlen rekordot sem, akkor nem kell a flash message ...
 
-        // Ki kell törölni a kábelpárok közül is a kábeleket ...
-
         $deleteCount = 0;
 
         if (count($this->selectedItems) > 0) {
