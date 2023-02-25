@@ -9,6 +9,7 @@ use App\Http\Livewire\DataTable\Cable\WithPerPagePagination;
 use App\Http\Livewire\DataTable\Cable\WithSorting;
 use App\Models\Cable;
 use App\Models\CablePair;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class ManageCable extends Component
@@ -18,8 +19,12 @@ class ManageCable extends Component
 
     public bool $showCommentModal = false;
     public bool $showDeleteModal = false;
+    public bool $showUpdateModal = false;
 
     public Cable $currentCable;
+
+    public int $cablePairStatusId = 0;
+    public int $cablePurposeId = 0;
 
     protected $queryString = [
         'sortField',
@@ -91,6 +96,45 @@ class ManageCable extends Component
                          'A '.$this->currentCable->full_name.' kábelhez a megjegyzés sikeresen felvitele került');
 
         $this->showCommentModal = false;
+
+    }
+
+    public function update() {
+
+        if (count($this->selectedItems) > 0) {
+
+            $this->validate([
+                'cablePairStatusId' => [
+                    'required',
+                    Rule::exists('cable_pair_statuses', 'id')
+                ],
+                'cablePurposeId' => [
+                    'required',
+                    Rule::exists('cable_purposes', 'id')
+                ]
+            ], [
+                'required' => 'A(z) :attribute mező megadása kötelező.',
+                'exists' => 'A(z) :attribute érték nem létezik az adatbázisban.'
+            ], [
+                'cablePairStatusId' => 'Kábelpár státusza',
+                'cablePurposeId' => 'Kábel felhasználási módja'
+            ]);
+
+            dd(array_map(function ($item) {
+                return Cable::findOrFail($item)->full_name;
+            }, $this->selectedItems));
+
+        }
+
+    }
+
+    public function toggleUpdateModal() {
+
+        // ha több elem van kijelölve, akkor a tömeges módosítások modal-t mutassa
+        // egyébként pedig hozza be a szerkesztés oldalt
+        $this->showUpdateModal = count($this->selectedItems) > 1 ?
+            !$this->showUpdateModal : $this->showUpdateModal;
+
 
     }
 

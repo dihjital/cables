@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminCableController;
 use App\Http\Controllers\AdminConnectivityDeviceController;
+use App\Http\Controllers\AdminLocationController;
 use App\Http\Controllers\AdminZoneController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\UserController;
@@ -66,6 +67,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/zones', [AdminZoneController::class, 'index'])->name('zones.index');
     Route::get('/admin/zones/create', [AdminZoneController::class, 'create'])->name('zones.create');
     Route::get('/admin/zones/{zone}/edit', [AdminZoneController::class, 'edit'])->name('zones.edit');
+
+    // Admin routes for locations
+    Route::get('/admin/locations', [AdminLocationController::class, 'index'])->name('locations.index');
+    Route::get('/admin/locations/create', [AdminLocationController::class, 'create'])->name('locations.create');
+    Route::get('/admin/locations/{location}/edit', [AdminLocationController::class, 'edit'])->name('locations.edit');
 
     Route::get('/history', [HistoryController::class, 'index'])->name('history');
 

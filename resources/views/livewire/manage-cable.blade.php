@@ -195,9 +195,9 @@
                         <button type="button" wire:click="toggleCommentModal({{ $cable->id }})" class="px-3 py-3 {{ $cable->comment ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-500 hover:bg-gray-600' }} text-white text-xs rounded-md">
                             <i class="fas fa-comments fa-sm" aria-hidden="true" title="Comment"></i>
                         </button>
-                        <a type="button" href="" class="px-3 py-3 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-md">
+                        <button type="button" wire:click="toggleUpdateModal" class="px-3 py-3 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-md">
                             <i class="fas fa-edit fa-sm" aria-hidden="true" title="Edit"></i>
-                        </a>
+                        </button>
                         <button type="button" wire:click="confirmDelete({{ $cable->id }})" class="px-3 py-3 bg-red-500 hover:bg-red-600 text-white text-xs rounded-md">
                             <i class="fas fa-trash fa-sm" aria-hidden="true" title="Delete"></i>
                         </button>
@@ -300,6 +300,88 @@
                 </x-forms.button>
             </x-slot>
         </x-modals.delete>
+
+    </form>
+
+    <form method="POST" wire:submit.prevent="update">
+
+        @csrf
+
+        <x-modals.dialog wire:model.defer="showUpdateModal">
+
+            <x-slot name="title">Kábelek tömeges szerkesztése</x-slot>
+
+            <x-slot name="content">
+
+                <p class="col-span-6 sm:col-span-3 lg:col-span-6 text-gray-700 dark:text-gray-200 mb-4">
+                    A kiválasztott kábelek tömeges módosítása esetén a kábelpár státusza,
+                    illetve a kábelek felhasználási módja változtatható.
+                </p>
+
+                <div class="col-span-6 sm:col-span-3 lg:col-span-6" wire:key="cablePairStatus">
+                    @php
+                        $cablePairStatuses = \App\Models\CablePairStatus::all();
+                    @endphp
+                    <label for="cablePairStatus" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Kábelpár státusza*</label>
+                    <select id="cablePairStatus"
+                            name="cablePairStatus"
+                            wire:model.defer="cablePairStatusId"
+                            required
+                            class="mt-1 block w-full rounded-md
+                                   border border-gray-300 bg-white
+                                   py-2 px-3 shadow-sm
+                                   focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
+                                   sm:text-sm">
+                        <option value="0" disabled>Kérem válasszon</option>
+                        @foreach($cablePairStatuses as $status)
+                            <option value="{{ $status->id }}"
+                                    @if ($cablePairStatusId === $status->id)
+                                        selected
+                                @endif
+                            >
+                                {{ $status->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error :messages="$errors->get('cablePairStatusId')" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 sm:col-span-3 col-span-6 mt-4 mb-4" wire:key="cablePurpose">
+                    @php
+                        $cablePurposes = \App\Models\CablePurpose::all();
+                    @endphp
+                    <label for="cablePurpose" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Kábel felhasználási módja*</label>
+                    <select id="cablePurpose"
+                            name="cablePurpose"
+                            wire:model.defer="cablePurposeId"
+                            required
+                            class="mt-1 block w-full rounded-md
+                                   border border-gray-300 bg-white
+                                   py-2 px-3 shadow-sm
+                                   focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
+                                   sm:text-sm">
+                        <option value="0" disabled>Kérem válasszon</option>
+                        @foreach($cablePurposes as $purpose)
+                            <option value="{{ $purpose->id }}"
+                                    @if ($cablePurposeId === $purpose->id)
+                                        selected
+                                @endif
+                            >
+                                {{ $purpose->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error :messages="$errors->get('cablePurposeId')" class="mt-2" />
+                </div>
+
+            </x-slot>
+
+            <x-slot name="footer">
+                <x-primary-button>{{ __('Módosítás') }}</x-primary-button>
+                <x-secondary-button wire:click="toggleUpdateModal" class="ml-2">{{ __('Mégsem') }}</x-secondary-button>
+            </x-slot>
+
+        </x-modals.dialog>
 
     </form>
 

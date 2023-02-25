@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\DataTable\Cable;
 
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 trait WithValidation {
