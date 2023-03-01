@@ -154,27 +154,31 @@
                                                 <!-- Connectivity Device owner //-->
                                                 <div class="col-span-6 sm:col-span-3">
                                                     <label for="owner_id" class="block text-sm font-medium text-gray-700">{{ __('Tulajdonos*') }}</label>
-                                                    <select id="owner_id"
-                                                            name="owner_id"
-                                                            required
-                                                            class="mt-1 block w-full rounded-md
-                                                            border border-gray-300 bg-white
-                                                            py-2 px-3 shadow-sm
-                                                            focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
-                                                            sm:text-sm">
-                                                        @php
-                                                            $owners = \App\Models\Owner::query()->orderBy('name')->get();
-                                                        @endphp
-                                                        <option value="" disabled selected>Kérem válasszon!</option>
-                                                        @foreach($owners as $owner)
-                                                            <option value="{{ $owner->id }}"
-                                                                    @if(old('owner_id', $connectivity_device->owner_id) == $owner->id)
-                                                                        selected
-                                                                @endif>
-                                                                {{ $owner->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    <div class="flex">
+                                                        <livewire:create-owner />
+                                                        <select id="owner_id"
+                                                                name="owner_id"
+                                                                required
+                                                                class="mt-1 block w-full rounded-none rounded-r-lg
+                                                                block flex-1 min-w-0
+                                                                border border-gray-300 bg-white
+                                                                py-2 px-3 shadow-sm
+                                                                focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
+                                                                sm:text-sm">
+                                                            @php
+                                                                $owners = \App\Models\Owner::query()->orderBy('name')->get();
+                                                            @endphp
+                                                            <option value="" disabled selected>Kérem válasszon!</option>
+                                                            @foreach($owners as $owner)
+                                                                <option value="{{ $owner->id }}"
+                                                                        @if(old('owner_id', $connectivity_device->owner_id) == $owner->id)
+                                                                            selected
+                                                                    @endif>
+                                                                    {{ $owner->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                     <x-input-error :messages="$errors->get('owner_id')" class="mt-2" />
                                                 </div>
 

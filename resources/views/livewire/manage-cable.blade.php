@@ -195,7 +195,7 @@
                         <button type="button" wire:click="toggleCommentModal({{ $cable->id }})" class="px-3 py-3 {{ $cable->comment ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-500 hover:bg-gray-600' }} text-white text-xs rounded-md">
                             <i class="fas fa-comments fa-sm" aria-hidden="true" title="Comment"></i>
                         </button>
-                        <button type="button" wire:click="toggleUpdateModal" class="px-3 py-3 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-md">
+                        <button type="button" wire:click="toggleUpdateModal({{ $cable->id }})" class="px-3 py-3 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-md">
                             <i class="fas fa-edit fa-sm" aria-hidden="true" title="Edit"></i>
                         </button>
                         <button type="button" wire:click="confirmDelete({{ $cable->id }})" class="px-3 py-3 bg-red-500 hover:bg-red-600 text-white text-xs rounded-md">

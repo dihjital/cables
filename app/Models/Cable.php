@@ -73,7 +73,10 @@ class Cable extends Model
 
     public function status(): Attribute {
         return Attribute::make(
-            get: fn ($value) => $value = $this->connection_points->first()?->cable_pair_status->name
+            get: fn ($value) => $this->connection_points->first()?->cable_pair_status->name,
+            set: fn ($value) => $this->connection_points->each(function ($item) use ($value) {
+                $item->cable_pair_status_id = $value;
+            })
         );
     }
 

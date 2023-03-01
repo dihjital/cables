@@ -18,6 +18,12 @@ trait WithBulkActions {
 
     }
 
+    public function resetBulkActions(): void {
+        $this->selectedItems = [];
+        $this->selectPage = false;
+        $this->selectAll = false;
+    }
+
     public function selectPageRows() {
         $this->selectedItems = $this->rows->pluck('id')->toArray();
     }

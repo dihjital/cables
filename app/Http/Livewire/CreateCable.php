@@ -39,6 +39,15 @@ class CreateCable extends Component
 
     public $massInsert = 1;
 
+    protected $listeners = [
+        'ownerAdded'
+    ];
+
+    public function ownerAdded(Owner $owner) {
+        $this->selectCD['startCDOwner'] = $owner->id;
+        $this->render();
+    }
+
     public function mount() {
         $this->installTime = Carbon::now()->toDateString();
     }

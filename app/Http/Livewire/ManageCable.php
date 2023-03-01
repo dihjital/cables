@@ -101,7 +101,7 @@ class ManageCable extends Component
 
     public function update() {
 
-        if (count($this->selectedItems) > 0) {
+        if (count($this->selectedItems) > 1) {
 
             $this->validate([
                 'cablePairStatusId' => [
@@ -120,28 +120,66 @@ class ManageCable extends Component
                 'cablePurposeId' => 'Kábel felhasználási módja'
             ]);
 
-            dd(array_map(function ($item) {
-                return Cable::findOrFail($item)->full_name;
-            }, $this->selectedItems));
+            // Update cable purpose and cable pair status ...
+
+            (clone $this->rowsQuery)
+                ->unless($this->selectAll, fn($query) => $query->whereKey($this->selectedItems))
+                ->reorder()
+                ->orderBy('id', 'asc')
+                ->chunkById(100, function ($rows) {
+                    // is there any change ... ?
+                    $rows->filter(function ($row) {
+                        return ($row->cable_purpose_id !== $this->cablePurposeId) ||
+                               (!$row->connection_points
+                                   ->filter(function ($item) {
+                                   return $item->cable_pair_status_id == $this->cablePairStatusId;
+                               })->count());
+                    // filter out invalid combinations ...
+                    })->filter(function ($row) {
+                        if ($this->cablePairStatusId === 3) {
+                            if ($row->start_point || $row->end_point) return false;
+                        } else {
+                            if (!$row->start_point && !$row->end_point) return false;
+                        }
+                        return true;
+                    // execute the changes ...
+                    })->map(function ($row) {
+                        $row->cable_purpose_id = $this->cablePurposeId;
+                        $row->connection_points()
+                            ->update(['cable_pair_status_id' => $this->cablePairStatusId]);
+                        return $row;
+                    // save the changes in the database.
+                    })->map->save();
+                });
+
+            $this->toggleUpdateModal(Cable::make());
+            $this->resetBulkActions();
 
         }
 
     }
 
-    public function toggleUpdateModal() {
+    public function toggleUpdateModal(Cable $cable): void {
 
-        // ha több elem van kijelölve, akkor a tömeges módosítások modal-t mutassa
-        // egyébként pedig hozza be a szerkesztés oldalt
-        $this->showUpdateModal = count($this->selectedItems) > 1 ?
-            !$this->showUpdateModal : $this->showUpdateModal;
-
+        if (count($this->selectedItems) > 1) {
+            if ($this->showUpdateModal) {
+                $this->showUpdateModal = false;
+                $this->reset('cablePurposeId', 'cablePairStatusId');
+                $this->resetErrorBag();
+            } else {
+                $this->cablePairStatusId = $cable->connection_points->first()->cable_pair_status_id ?? 0;
+                $this->cablePurposeId = $cable->cable_purpose_id ?? 0;
+                $this->showUpdateModal = true;
+            }
+        } else {
+            // re-route to edit-cable livewire component ...
+        }
 
     }
 
     public function toggleCommentModal (Cable $cable): void {
 
         $this->currentCable = $cable ?? null;
-
         $this->showCommentModal = true;
 
     }

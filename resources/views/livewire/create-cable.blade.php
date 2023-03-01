@@ -30,27 +30,31 @@
 
                             <div class="col-span-6 sm:col-span-3" wire:key="startCDOwner">
                                 <label for="selectCD[startCDOwner]" class="block text-sm font-medium text-gray-700">Kezdő kapcsolati eszköz tulajdonosa*</label>
-                                <select id="selectCD[startCDOwner]"
-                                        name="selectCD[startCDOwner]"
-                                        wire:model="selectCD.startCDOwner"
-                                        required
-                                        class="mt-1 block w-full rounded-md
-                                               border border-gray-300 bg-white
-                                               py-2 px-3 shadow-sm
-                                               focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
-                                               sm:text-sm">
-                                        <option value="0" disabled>Kérem válasszon</option>
-                                    @forelse($owners as $owner)
-                                        <option value="{{ $owner->id }}"
-                                                @if ($selectCD['startCDOwner'] === $owner->id)
-                                                selected
-                                                @endif
-                                        >
-                                            {{ $owner->name }}
-                                        </option>
-                                    @empty
-                                    @endforelse
-                                </select>
+                                <div class="flex">
+                                    <livewire:create-owner />
+                                    <select id="selectCD[startCDOwner]"
+                                            name="selectCD[startCDOwner]"
+                                            wire:model="selectCD.startCDOwner"
+                                            required
+                                            class="mt-1 block w-full rounded-none rounded-r-lg
+                                                   block flex-1 min-w-0
+                                                   border border-gray-300 bg-white
+                                                   py-2 px-3 shadow-sm
+                                                   focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
+                                                   sm:text-sm">
+                                            <option value="0" disabled>Kérem válasszon</option>
+                                        @forelse($owners as $owner)
+                                            <option value="{{ $owner->id }}"
+                                                    @if ($selectCD['startCDOwner'] === $owner->id)
+                                                    selected
+                                                    @endif
+                                            >
+                                                {{ $owner->name }}
+                                            </option>
+                                        @empty
+                                        @endforelse
+                                    </select>
+                                </div>
                                 <x-input-error :messages="$errors->get('selectCD.startCDOwner')" class="mt-2" />
                             </div>
 
@@ -294,8 +298,8 @@
                                            id="cableName"
                                            wire:model="cableName"
                                            class="mt-1 rounded-none rounded-r-lg border text-gray-900
-                                              focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full
-                                              text-sm border-gray-300 py-2">
+                                                  focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full
+                                                  text-sm border-gray-300 py-2">
                                 </div>
                                 <x-input-error :messages="$errors->get('cableName')" class="mt-2" />
                             </div>
