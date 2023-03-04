@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Action;
 use App\Models\Traits\WithHistory;
 use App\Models\Traits\WithOwnersDescription;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,6 +39,18 @@ class Owner extends Model
             $owner->history(Action::Add);
         });
 
+    }
+
+    public function scopeGetByName(Builder $query, string $name) {
+        return $query->where('name', 'like', '%'.$name.'%');
+    }
+
+    public function scopeOrderById(Builder $query, string $direction = 'asc') {
+        return $query->orderBy('id', $direction);
+    }
+
+    public function scopeOrderByName(Builder $query, string $direction = 'asc') {
+        return $query->orderBy('name', $direction);
     }
 
     public function connectivity_devices () {

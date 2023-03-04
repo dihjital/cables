@@ -159,7 +159,7 @@ class ManageCable extends Component
 
     }
 
-    public function toggleUpdateModal(Cable $cable): void {
+    public function toggleUpdateModal(Cable $cable) {
 
         if (count($this->selectedItems) > 1) {
             if ($this->showUpdateModal) {
@@ -173,6 +173,7 @@ class ManageCable extends Component
             }
         } else {
             // re-route to edit-cable livewire component ...
+            return redirect()->route('cables.edit', ['cable' => $cable->id]);
         }
 
     }

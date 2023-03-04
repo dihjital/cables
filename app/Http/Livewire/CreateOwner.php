@@ -54,9 +54,9 @@ class CreateOwner extends Component
         $this->validate($this->rules, $this->messages, $this->attributes);
 
         $this->owner->save();
-        $this->showOwnerModal = false;
-
         $this->emit('ownerAdded', $this->owner->id);
+
+        $this->toggleShowOwnerModal();
 
     }
 

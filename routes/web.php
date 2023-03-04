@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminCableController;
 use App\Http\Controllers\AdminConnectivityDeviceController;
 use App\Http\Controllers\AdminLocationController;
+use App\Http\Controllers\AdminOwnerController;
 use App\Http\Controllers\AdminZoneController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\UserController;
@@ -61,7 +62,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin routes for cables
     Route::get('/admin/cables', [AdminCableController::class, 'index'])->name('cables.index');
-    Route::get('/admin/cable/create', [AdminCableController::class, 'create'])->name('cables.create');
+    Route::get('/admin/cables/create', [AdminCableController::class, 'create'])->name('cables.create');
+    Route::get('/admin/cables/{cable}/edit', [AdminCableController::class, 'edit'])->name('cables.edit');
 
     // Admin routes for zones
     Route::get('/admin/zones', [AdminZoneController::class, 'index'])->name('zones.index');
@@ -74,8 +76,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/locations/{location}/edit', [AdminLocationController::class, 'edit'])->name('locations.edit');
 
     Route::get('/history', [HistoryController::class, 'index'])->name('history');
-
     Route::get('/admin/users', [UserController::class, 'index'])->name('users');
+    Route::get('/admin/owners', [AdminOwnerController::class, 'index'])->name('owners.index');
 
 });
 

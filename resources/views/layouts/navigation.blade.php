@@ -13,7 +13,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Műszerfal') }}
                     </x-nav-link>
                     <x-nav-link :href="route('connectivity_device.index')" :active="request()->routeIs('connectivity_device.*')">
                         {{ __('Kapcsolati eszközök') }}
@@ -35,6 +35,9 @@
                         {{ __('Felhasználók') }}
                     </x-nav-link>
                     @endcan
+                    <x-nav-link :href="route('owners.index')" :active="request()->routeIs('owners.*')">
+                        {{ __('Tulajdonosok') }}
+                    </x-nav-link>
                 </div>
             </div>
 

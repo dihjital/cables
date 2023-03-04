@@ -31,17 +31,8 @@ trait WithValidation {
         'prohibited_if' => ':attribute nem lehet megadva, amennyiben a kábelpár státusza Spare (:value)'
     ];
 
-    // public function prepareForValidation($attributes) {
-    //    $attributes['cableName'] = substr($this->cableName, 1);
-    //    return $attributes;
-    // }
-
-    public function validateSave() {
-
-        // TODO: A kapcsolati pontok ellenőrzését ki kell egészíteni
-        // ha spare egy kábel, akkor nem lehet kapcsolati pontja
-
-        $this->validate([
+    protected function rulesForSave(): array {
+        return [
             'selectCD.startCDOwner' => [
                 'required',
                 Rule::exists('owners', 'id')
@@ -92,7 +83,36 @@ trait WithValidation {
                 'required',
                 'numeric'
             ]
-        ], $this->messages, $this->attributes);
+        ];
+    }
+
+    public function rulesForUpdate(): array {
+
+        $rules = $this->rulesForSave();
+
+        $rules['cableName'] = [
+            'required',
+            'regex:/^[0-9]{7}$/',
+            Rule::unique('cables', 'name')
+                ->where('cable_type_id', $this->cableTypeId)
+                ->ignore($this->cable)
+        ];
+
+        unset($rules['massInsert']);
+
+        return $rules ?? [];
+
+    }
+
+    public function validateSave() {
+
+        $this->validate($this->rulesForSave(), $this->messages, $this->attributes);
+
+    }
+
+    public function validateUpdate() {
+
+        $this->validate($this->rulesForUpdate(), $this->messages, $this->attributes);
 
     }
 
