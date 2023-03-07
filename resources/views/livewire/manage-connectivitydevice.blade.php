@@ -31,33 +31,38 @@
         </div>
 
         <div class="flex flex-row flow-root">
-            <div class="float-left">
-                <x-forms.select name="pageSize" wire:model="pageSize">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                </x-forms.select>
-            </div>
-            <div class="float-right space-x-1">
-                <livewire:import-connectivitydevices />
-                @if(count($selectedItems))
-                <x-buttons.export wire:click="exportSelected">
-                    Export
-                </x-buttons.export>
-                <button class="px-5 py-2 bg-gray-600 hover:bg-gray-700 text-white text-xs rounded-xl"
-                        wire:click="confirmDelete()"
-                >
-                    <i class="fas fa-trash fa-xl mr-2" aria-hidden="true"></i>
-                    Delete
-                </button>
-                @endif
-                @if (count(array_filter($search)))
-                <x-buttons.reset-filter wire:click="resetFiltering">
-                    Reset
-                </x-buttons.reset-filter>
-                @endif
-                <div class="text-xs" wire:loading.delay wire:target="exportSelected">
-                    Export in progress ...
+            <div class="flex items-center">
+                <div class="w-1/12">
+                    <x-forms.label name="pageSize" label="Page Size:" />
+                </div>
+                <div class="w-1/12 mr-4">
+                    <x-forms.select name="pageSize" wire:model="pageSize">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </x-forms.select>
+                </div>
+                <div class="w-full float-right inline-flex rounded-md justify-end space-x-1">
+                    <livewire:import-connectivitydevices />
+                    @if(count($selectedItems))
+                    <x-buttons.export wire:click="exportSelected">
+                        Export
+                    </x-buttons.export>
+                    <button class="px-5 py-2 bg-gray-600 hover:bg-gray-700 text-white text-xs rounded-xl"
+                            wire:click="confirmDelete()"
+                    >
+                        <i class="fas fa-trash fa-xl mr-2" aria-hidden="true"></i>
+                        Delete
+                    </button>
+                    @endif
+                    @if (count(array_filter($search)))
+                    <x-buttons.reset-filter wire:click="resetFiltering">
+                        Reset
+                    </x-buttons.reset-filter>
+                    @endif
+                    <div class="text-xs" wire:loading.delay wire:target="exportSelected">
+                        Export in progress ...
+                    </div>
                 </div>
             </div>
         </div>
@@ -189,7 +194,8 @@
                         <x-table.cell>
                             <div class="flex items-center">
                                 <div class="text-sm font-medium text-gray-900">
-                                    {{ $cd->cable_count }}
+{{--                                    {{ $cd->cables->count() }} --}}
+                                    {{ \DB::table('cable_pairs')->where('conn_dev_id',$cd->id)->count() }}
                                 </div>
                             </div>
                         </x-table.cell>
@@ -216,7 +222,9 @@
                         <x-table.cell>
                             <div class="flex items-center">
                                 <div class="text-sm font-medium text-gray-900 truncate">
-                                    <strong>&#8721;</strong> {{ $connectivity_devices->sum('cable_count') }}
+                                    <strong>&#8721;</strong>
+{{--                                    {{ $connectivity_devices->sum('cable_count') }} --}}
+                                    {{ \DB::table('cable_pairs')->whereIn('conn_dev_id', $connectivity_devices->pluck('id'))->count() }}
                                 </div>
                             </div>
                         </x-table.cell>

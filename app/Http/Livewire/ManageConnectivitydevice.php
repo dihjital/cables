@@ -83,7 +83,7 @@ class ManageConnectivitydevice extends Component
             ->with(['zone',
                     'location',
                     'owner',
-                    'cables',
+                    // 'cables', --> lazy loading is ok in this case
                     'connectivity_device_type'
             ]);
 

@@ -5,6 +5,9 @@ namespace App\Http\Livewire;
 use App\Http\Livewire\DataTable\Cable\WithValidation;
 use App\Models\Cable;
 use App\Models\CablePair;
+use App\Models\CablePairStatus;
+use App\Models\CablePurpose;
+use App\Models\CableType;
 use App\Models\ConnectivityDevice;
 use App\Models\Owner;
 use Livewire\Component;
@@ -92,7 +95,6 @@ class BaseCable extends Component
             }, array_keys($range), array_values($range)) : [];
     }
 
-    // TODO: ki kell szűrni azokat, ahol nincsen kapcsolati pont csak státusz ...
     protected function getUsableCdRange(string $cdId = ''): array {
         return $cdId ?
             ConnectivityDevice::query()
@@ -117,6 +119,30 @@ class BaseCable extends Component
 
         return $cable_pair;
 
+    }
+
+    protected function prepareForRendering(): array {
+        return [
+            'cableTypes' => CableType::all(),
+            'cablePurposes' => CablePurpose::all(),
+            'cablePairStatuses' => CablePairStatus::all(),
+            'owners' => Owner::query()
+                ->orderBy('name', 'asc')
+                ->select('id', 'name')
+                ->get(),
+            'startCDList' => ConnectivityDevice::query()
+                ->where('owner_id', $this->selectCD['startCDOwner'])
+                ->orderByFullName('asc')
+                ->get(),
+            'endCDList' => ConnectivityDevice::query()
+                ->where('owner_id', $this->selectCD['endCDOwner'])
+                ->orderByFullName('asc')
+                ->get(),
+            'startCablePairsList' =>
+                $this->createCablePairsList($this->getUsableCdRange($this->selectCD['startCDId'])),
+            'endCablePairsList' =>
+                $this->createCablePairsList($this->getUsableCdRange($this->selectCD['endCDId']))
+        ];
     }
 
 }

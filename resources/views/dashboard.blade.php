@@ -9,22 +9,54 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="grid grid-cols-4 gap-4">
-                        <x-cards.cables>
-                            Lehetőség van a rendszerben a kábelek listázására, tömeges illetve egyedi felvitelére, szerkesztésére és exportálására illetve importálására is .csv formátumból.
-                        </x-cards.cables>
-                        <x-cards.connectivity_devices>
-                            Lehetőség van a rendszerben a kapcsolati eszközök listázására, tömeges illetve egyedi felvitelére, szerkesztésére és exportálására illetve importálására is .csv formátumból.
-                        </x-cards.connectivity_devices>
-                        <x-cards.locations>
-                            Lehetőség van a rendszerben a lokációk és zónák listázására, felvitelére és szerkesztésére. A zónákat lokációkhoz lehet rendelni és ugyanez megtehető a lokációk és zónák összerendelése kapcsán is.
-                        </x-cards.locations>
-                        <x-cards.users>
-                            Lehetőség van a rendszerben a felhasználók felvitelére és szerkesztésére. Beállítható, hogy mely felhasználók aktívak vagy inaktívak, illet, hogy melyek rendelkeznek adminisztrátori jogokkal.
-                        </x-cards.users>
-                    </div>
+                        <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+                            <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-3 dark:text-white sm:p-8">
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl font-extrabold">
+                                        {{ number_format(\App\Models\Cable::count(), 0, '', ',') }}
+                                    </dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Kábelek száma') }}</dd>
+                                </div>
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl font-extrabold">
+                                        {{ number_format(\App\Models\CablePair::distinct('cable_id')
+                                            ->where('cable_pair_status_id', 2)
+                                            ->count(), 0, '', ',') }}
+                                    </dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">Aktív kábelek száma</dd>
+                                </div>
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl font-extrabold">
+                                        {{ number_format(\DB::table('cables')
+                                            ->where('cable_type_id', 3)
+                                            ->count(), 0, '', ',') }}
+                                    </dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">Üvegszálas kábelek száma</dd>
+                                </div>
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl font-extrabold">
+                                        {{ \App\Models\ConnectivityDevice::count() }}
+                                    </dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Kapcsolati eszközök száma') }}</dd>
+                                </div>
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl font-extrabold">
+                                        {{ number_format(\App\Models\CablePair::distinct('conn_dev_id', 'conn_point')
+                                            ->count(), 0, '', ',') }}
+                                    </dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Kapcsolati pontok száma') }}</dd>
+                                </div>
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl font-extrabold">
+                                        {{ \App\Models\Owner::count() }}
+                                    </dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Tulajdonosok száma') }}</dd>
+                                </div>
+                            </dl>
+                        </div>
                 </div>
             </div>
         </div>
     </div>
+
 </x-app-layout>

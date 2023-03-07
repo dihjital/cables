@@ -11,9 +11,9 @@ class CreateOwner extends Component
     public Owner $owner;
     public bool $showOwnerModal = false;
 
-    public function mount() {
-        $this->owner = Owner::make(['name' => '']);
-    }
+    public bool $renderSelect = true;
+
+    public function mount(Owner $owner) { $this->owner = $owner; }
 
     protected array $attributes = [
         'owner.name' => 'Tulajdonos neve'
@@ -22,29 +22,35 @@ class CreateOwner extends Component
     protected array $messages = [
         'required' => 'A(z) :attribute mező megadása kötelező.',
         'min'      => 'A(z) :attribute rövidebb, mint a minimum (:min).',
-        'unique'   => 'A(z) :attribute nem egyedi az adatbázisban.'
+        'unique'   => 'A(z) :attribute nem egyedi az adatbázisban.',
+        'string'   => 'A(z) :attribute nem karakterlánc.'
     ];
 
     protected array $rules = [
         'owner.name' => [
-            'string',
             'required',
+            'string',
             'min:3',
             'unique:owners,name'
         ]
     ];
 
-    public function resetPublicVariables() {
-        $this->owner = Owner::make(['name' => '']);
-        // $this->reset(); // this will throw an error due to unitialized variable
-        $this->resetErrorBag();
+    protected $listeners = [
+        'toggleShowOwnerModal' => 'showOwnerModal'
+    ];
+
+    public function showOwnerModal(Owner $owner) {
+        $this->owner = $owner;
+        $this->toggleShowOwnerModal();
     }
 
     public function toggleShowOwnerModal() {
         if ($this->showOwnerModal) {
-            $this->resetPublicVariables();
             $this->showOwnerModal = false;
+            $this->owner = new Owner();
         } else {
+            $this->resetValidation('owner.name');
+            $this->resetErrorBag('owner.name');
             $this->showOwnerModal = true;
         }
     }
@@ -53,7 +59,9 @@ class CreateOwner extends Component
 
         $this->validate($this->rules, $this->messages, $this->attributes);
 
-        $this->owner->save();
+        $this->owner->id ? $this->owner->update() : $this->owner->save();
+
+        $this->emitUp('showEmittedFlashMessage', $this->owner->name.' sikeresen rögzítésre került a rendszerben.');
         $this->emit('ownerAdded', $this->owner->id);
 
         $this->toggleShowOwnerModal();

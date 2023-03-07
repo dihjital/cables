@@ -29,7 +29,7 @@
                                         <li>Lokáció neeve</li>
                                         <li>Tulajdonos</li>
                                     </ul>
-                                    <p class="mt-2 text-sm text-gray-600">*A kezdő illetve végződő kapcsolati pontok kitöltése nem kötelező. A kábelpár státusza alapján kell ezeket megadni</p>
+                                    <p class="mt-2 text-sm text-gray-600"></p>
                                 </div>
                             </div>
 

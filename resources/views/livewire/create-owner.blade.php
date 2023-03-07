@@ -1,13 +1,22 @@
 <div>
 
-    <div>
+    @if ($renderSelect)
+        <div>
+            <button type="button" wire:click="toggleShowOwnerModal"
+                class="mt-1 inline-flex items-center py-5 px-2.5
+                       bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-l-md
+                       border border-r-0 border-blue-500">
+                <i class="fas fa-plus fa-sm" aria-hidden="true" title="Add new owner"></i>
+            </button>
+        </div>
+    @else
         <button type="button" wire:click="toggleShowOwnerModal"
-            class="mt-1 inline-flex items-center py-5 px-2.5
-                   bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-l-md
-                   border border-r-0 border-blue-500">
-            <i class="fas fa-plus fa-sm" aria-hidden="true" title="Add new owner"></i>
+           class="fixed z-100 bottom-10 right-8 bg-blue-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-blue-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
+            <svg width="50" height="50" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
         </button>
-    </div>
+    @endif
 
     <form method="POST" wire:submit.prevent="save" id="saveNewOwner">
 
@@ -39,7 +48,7 @@
             </x-slot>
 
             <x-slot name="footer">
-                <x-primary-button wire:click="save" form="saveNewOwner">{{ __('Rögzítés') }}</x-primary-button>
+                <x-primary-button wire:click="save" form="saveNewOwner">{{ __('Rendben') }}</x-primary-button>
                 <x-secondary-button wire:click.self="toggleShowOwnerModal" class="ml-2">{{ __('Mégsem') }}</x-secondary-button>
             </x-slot>
 

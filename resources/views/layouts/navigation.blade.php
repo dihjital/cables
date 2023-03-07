@@ -30,14 +30,14 @@
                     <x-nav-link :href="route('history')" :active="request()->routeIs('history')">
                         {{ __('Napló') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('owners.index')" :active="request()->routeIs('owners.*')">
+                        {{ __('Tulajdonosok') }}
+                    </x-nav-link>
                     @can('manage-users')
                     <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
                         {{ __('Felhasználók') }}
                     </x-nav-link>
                     @endcan
-                    <x-nav-link :href="route('owners.index')" :active="request()->routeIs('owners.*')">
-                        {{ __('Tulajdonosok') }}
-                    </x-nav-link>
                 </div>
             </div>
 

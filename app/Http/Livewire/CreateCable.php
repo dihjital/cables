@@ -4,12 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Http\Livewire\DataTable\Cable\WithValidation;
 use App\Models\Cable;
-use App\Models\CablePair;
-use App\Models\CablePairStatus;
-use App\Models\CablePurpose;
-use App\Models\CableType;
 use App\Models\ConnectivityDevice;
-use App\Models\Owner;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -87,28 +82,6 @@ class CreateCable extends BaseCable
 
     }
 
-    public function render() {
-        return view('livewire.create-cable', [
-            'cableTypes' => CableType::all(),
-            'cablePurposes' => CablePurpose::all(),
-            'cablePairStatuses' => CablePairStatus::all(),
-            'owners' => Owner::query()
-                ->orderBy('name', 'asc')
-                ->select('id', 'name')
-                ->get(),
-            'startCDList' => ConnectivityDevice::query()
-                ->where('owner_id', $this->selectCD['startCDOwner'])
-                ->orderByFullName('asc')
-                ->get(),
-            'endCDList' => ConnectivityDevice::query()
-                ->where('owner_id', $this->selectCD['endCDOwner'])
-                ->orderByFullName('asc')
-                ->get(),
-            'startCablePairsList' =>
-                $this->createCablePairsList($this->getUsableCdRange($this->selectCD['startCDId'])),
-            'endCablePairsList' =>
-                $this->createCablePairsList($this->getUsableCdRange($this->selectCD['endCDId']))
-        ]);
-    }
+    public function render() { return view('livewire.create-cable', $this->prepareForRendering()); }
 
 }

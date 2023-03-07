@@ -17,9 +17,20 @@ class ManageOwner extends Component {
     public bool $showDeleteModal = false;
     public Owner $currentOwner;
 
+    protected $listeners = [
+        'ownerAdded' => '$refresh',
+        'showEmittedFlashMessage'
+    ];
+
+    public function showEmittedFlashMessage($message) {
+        session()->flash('success', $message);
+    }
+
     public function mount() {
         $this->currentOwner = new Owner();
     }
+
+    public function toggleNewOwnerModal(Owner $owner) { $this->emit('toggleShowOwnerModal', $owner->id); }
 
     public function confirmDelete (Owner $owner) {
 

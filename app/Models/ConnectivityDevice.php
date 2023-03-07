@@ -63,7 +63,7 @@ class ConnectivityDevice extends Model
 
     public function cableCount(): Attribute {
         return Attribute::make(
-            get: fn ($value) => $value = $this->cables()->count()
+            get: fn ($value) => $this->cables()->count()
             // get: fn ($value) => $value = $this->withCount('cables')->get()
         );
     }
