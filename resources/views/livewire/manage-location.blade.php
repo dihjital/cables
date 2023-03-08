@@ -79,7 +79,7 @@
                     <div class="flex items-center">
                         <button wire:click="sortBy('zone.name')"
                                 class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Kapcsolódó zónák(k) neve
+                            Kapcsolódó zónák neve
                         </button>
                         <x-table.sort-icon field="zone.name" :sortField="$sortField" :sortDirection="$sortDirection" />
                     </div>
