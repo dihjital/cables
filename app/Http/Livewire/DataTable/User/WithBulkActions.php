@@ -39,14 +39,7 @@ trait WithBulkActions {
     }
 
     public function exportSelected() {
-
-        if (count($this->selectedItems) > 0)
-            return (new CablesExport())
-                ->forFullName($this->search['full_name'] ?? null)
-                ->forStatus($this->search['status'] ?? null)
-                ->forKeys($this->selectAll ? null : $this->selectedItems)
-                ->download('cables.csv');
-
+        //
     }
 
 }

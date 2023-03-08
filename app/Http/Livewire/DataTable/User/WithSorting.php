@@ -4,8 +4,8 @@ namespace App\Http\Livewire\DataTable\User;
 
 trait WithSorting {
 
-    public $sortField;
-    public $sortDirection = 'asc';
+    public $sortField = 'last_login_at';
+    public $sortDirection = 'desc';
 
     public function sortBy($field) {
 
@@ -21,7 +21,7 @@ trait WithSorting {
 
     public function applySorting($query) {
         return $query
-            ->when($this->sortField === 'updated_at', fn($q) => $q->orderByUpdatedAt($this->sortDirection))
+            ->when($this->sortField === 'last_login_at', fn($q) => $q->orderByLastLoginAt($this->sortDirection))
             ->when($this->sortField === 'name', fn($q) => $q->orderByName($this->sortDirection));
     }
 

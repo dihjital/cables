@@ -25,10 +25,15 @@ trait WithHistory
         $userId = $userId ?: Auth::id();
         $diff = $diff ?: $this->getDiff();
 
-        return $this->histories()->attach($userId, array_merge([
-            'action' => $action,
-            'model_type' => get_class($this)],
-            $diff));
+        $count = count(array_filter($diff, function ($item) {
+            return $item !== '[]'; // JSON representation of an empty array
+        }));
+
+        if ($count)
+            return $this->histories()->attach($userId, array_merge([
+                'action' => $action,
+                'model_type' => get_class($this)],
+                $diff));
 
     }
 

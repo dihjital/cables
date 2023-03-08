@@ -16,7 +16,8 @@ class ConnectivityDevice extends Model
     use HasFactory, SoftDeletes, WithHistory, WithCDDescription;
 
     protected $casts = [
-        'action' => Action::class
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
     protected $fillable = [

@@ -17,6 +17,11 @@ class Zone extends Model
         'name'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
+    ];
+
     public static function boot () {
 
         parent::boot();

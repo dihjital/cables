@@ -22,6 +22,11 @@ class Location extends Model
         'number_of_connectivity_devices_by_zone'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
+    ];
+
     public static function boot () {
 
         parent::boot();

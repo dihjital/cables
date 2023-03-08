@@ -38,6 +38,12 @@ class Cable extends Model
         'i_time'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'i_time' => 'datetime:Y-m-d H:i:s'
+    ];
+
     protected $attributes = [
         'cable_type_id' => 1,
         'cable_purpose_id' => 1,

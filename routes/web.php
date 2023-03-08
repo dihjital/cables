@@ -81,16 +81,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-Route::get('/zones', [ZoneController::class, 'index'])->name('zones');
-Route::post('/zones', [ZoneController::class, 'store'])
-    ->name('zone.new');
-// Route::delete('/zones/{zone_name}/delete/{location_name}', [ZoneController::class, 'destroy']);
-
-Route::get('/locations', [LocationController::class, 'index'])->name('locations');
-Route::delete('/locations/{location_name}/zones/{zone_name}', [LocationController::class, 'destroy'])
-    ->name('zone.location.delete');
-
-// Publicly available routes
-Route::get('/connectivity_devices', [ConnectivityDeviceController::class, 'index']);
-
 require __DIR__.'/auth.php';
