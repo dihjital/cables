@@ -60,9 +60,6 @@
                         Reset
                     </x-buttons.reset-filter>
                     @endif
-                    <div class="text-xs" wire:loading.delay wire:target="exportSelected">
-                        Export in progress ...
-                    </div>
                 </div>
             </div>
         </div>
@@ -285,6 +282,10 @@
         </x-modals.delete>
 
     </form>
+
+    <div wire:loading.delay wire:target="exportSelected">
+        <x-modals.export></x-modals.export>
+    </div>
 
 </div>
 
