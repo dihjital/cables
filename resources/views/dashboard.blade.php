@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Műszerfal') }}
+            {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
@@ -15,7 +15,7 @@
                                     <dt class="mb-2 text-3xl font-extrabold">
                                         {{ number_format(\App\Models\Cable::count(), 0, '', ',') }}
                                     </dt>
-                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Kábelek száma') }}</dd>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Number of cables') }}</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
                                     <dt class="mb-2 text-3xl font-extrabold">
@@ -23,7 +23,7 @@
                                             ->where('cable_pair_status_id', 2)
                                             ->count(), 0, '', ',') }}
                                     </dt>
-                                    <dd class="font-light text-gray-500 dark:text-gray-400">Aktív kábelek száma</dd>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Number of active cables') }}</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
                                     <dt class="mb-2 text-3xl font-extrabold">
@@ -31,26 +31,26 @@
                                             ->where('cable_type_id', 3)
                                             ->count(), 0, '', ',') }}
                                     </dt>
-                                    <dd class="font-light text-gray-500 dark:text-gray-400">Üvegszálas kábelek száma</dd>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Number of fiber cables') }}</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
                                     <dt class="mb-2 text-3xl font-extrabold">
                                         {{ \App\Models\ConnectivityDevice::count() }}
                                     </dt>
-                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Kapcsolati eszközök száma') }}</dd>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Number of connectivity devices') }}</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
                                     <dt class="mb-2 text-3xl font-extrabold">
                                         {{ number_format(\App\Models\CablePair::distinct('conn_dev_id', 'conn_point')
                                             ->count(), 0, '', ',') }}
                                     </dt>
-                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Kapcsolati pontok száma') }}</dd>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Number of connection points') }}</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
                                     <dt class="mb-2 text-3xl font-extrabold">
                                         {{ \App\Models\Owner::count() }}
                                     </dt>
-                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Tulajdonosok száma') }}</dd>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">{{ __('Number of owners') }}</dd>
                                 </div>
                             </dl>
                         </div>

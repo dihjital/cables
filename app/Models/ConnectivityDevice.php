@@ -216,4 +216,44 @@ class ConnectivityDevice extends Model
 
     }
 
+    /**
+     * Compare connection points of a connectivity device
+     * If start is greater than end it returns false otherwise true
+     *
+     * @param string $start
+     * @param string $end
+     * @return bool
+     * @params string start: start connection point
+     * @params string end: end connection point
+     */
+    public static function compareConnectionPoints (string $start, string $end): bool {
+
+        if (!$start || !$end) return false;
+
+        $start_matches = $end_matches = array();
+
+        preg_match("/^Z([0-9]{3})S([0-9]{2})P([0-9]{3})$/si",
+            $start, $start_matches);
+
+        preg_match("/^Z([0-9]{3})S([0-9]{2})P([0-9]{3})$/si",
+            $end, $end_matches);
+
+        $start_zone   = $start_matches[1];
+        $start_stripe = $start_matches[2];
+        $start_port   = $start_matches[3];
+
+        $end_zone     = $end_matches[1];
+        $end_stripe   = $end_matches[2];
+        $end_port     = $end_matches[3];
+
+        if ((($end_zone - $start_zone) != 0) ||         // Zones should match
+            (($end_stripe - $start_stripe) < 0) ||      // Stripe should be the same or greater
+            (($end_port - $start_port) < 0)) {          // Port should be greater
+            return false;
+        }
+
+        return true;
+
+    }
+
 }

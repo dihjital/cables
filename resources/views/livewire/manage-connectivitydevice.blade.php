@@ -1,9 +1,8 @@
 <div>
 
-    <a href="{{ route('connectivity_device.create') }}" title="Új rekord"
+    <a href="{{ route('connectivity_device.create') }}" title="{{ __('Új rekord') }}"
        class="fixed z-100 bottom-10 right-8 bg-blue-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-blue-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             width="50" height="50" fill="currentColor"
+        <svg width="50" height="50" fill="currentColor"
              class="bi bi-plus" viewBox="0 0 16 16">
             <path
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -15,17 +14,17 @@
         <div class="flex flex-row items-center justify-center space-x-4 mb-4">
             <div class="relative w-3/12">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                     </svg>
                 </div>
-                <input type="search" wire:model.debounce.500ms="search.full_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Keresés kapcsolati eszköz nevére ...">
+                <input type="search" wire:model.debounce.500ms="search.full_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="{{ __('Keresés kapcsolati eszköz nevére') }} ...">
             </div>
             <a class="text-sm text-blue-600" href="#" wire:click="$toggle('showAdvancedSearch')">
                 @if ($showAdvancedSearch)
-                Hide Advanced Search
+                {{ __('Hide Advanced Search') }}
                 @else
-                Advanced Search ...
+                {{ __('Advanced Search') }} ...
                 @endif
             </a>
         </div>
@@ -33,7 +32,7 @@
         <div class="flex flex-row flow-root">
             <div class="flex items-center">
                 <div class="w-1/12">
-                    <x-forms.label name="pageSize" label="Page Size:" />
+                    <x-forms.label name="pageSize" label="{{ __('Page size') }}:" />
                 </div>
                 <div class="w-1/12 mr-4">
                     <x-forms.select name="pageSize" wire:model="pageSize">
@@ -46,18 +45,18 @@
                     <livewire:import-connectivitydevices />
                     @if(count($selectedItems))
                     <x-buttons.export wire:click="exportSelected">
-                        Export
+                        {{ __('Export') }}
                     </x-buttons.export>
                     <button class="px-5 py-2 bg-gray-600 hover:bg-gray-700 text-white text-xs rounded-xl"
                             wire:click="confirmDelete()"
                     >
                         <i class="fas fa-trash fa-xl mr-2" aria-hidden="true"></i>
-                        Delete
+                        {{ __('Delete') }}
                     </button>
                     @endif
                     @if (count(array_filter($search)))
                     <x-buttons.reset-filter wire:click="resetFiltering">
-                        Reset
+                        {{ __('Reset') }}
                     </x-buttons.reset-filter>
                     @endif
                 </div>
@@ -73,7 +72,7 @@
                     <div class="flex items-center">
                         <button wire:click="sortBy('name')"
                                 class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Név
+                            {{ __('Név') }}
                         </button>
                         <x-table.sort-icon field="name" :sortField="$sortField" :sortDirection="$sortDirection" />
                     </div>
@@ -82,7 +81,7 @@
                     <div class="flex items-center">
                         <button wire:click="sortBy('connectivity_device_type.name')"
                                 class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Típus
+                            {{ __('Típus') }}
                         </button>
                         <x-table.sort-icon field="connectivity_device_type.name" :sortField="$sortField" :sortDirection="$sortDirection" />
                     </div>
@@ -91,7 +90,7 @@
                     <div class="flex items-center">
                         <button wire:click="sortBy('owner.name')"
                                 class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Tulajdonos
+                            {{ __('Tulajdonos') }}
                         </button>
                         <x-table.sort-icon field="owner.name" :sortField="$sortField" :sortDirection="$sortDirection" />
                     </div>
@@ -105,7 +104,7 @@
                     <x-table.cell colspan="7" class="bt-0">
                         @unless($selectAll)
                             <div class="text-sm">
-                                <span>Kiválasztott rekordok száma: <strong>{{ $connectivity_devices->count() }}</strong> db., ki szeretnéd mind a(z) <strong>{{ $connectivity_devices->total() }}</strong> db.-ot választani?</span>
+                                <span>{{ __('Kiválasztott rekordok száma') }}: <strong>{{ $connectivity_devices->count() }}</strong> db., ki szeretnéd mind a(z) <strong>{{ $connectivity_devices->total() }}</strong> db.-ot választani?</span>
                                 <a href="#" wire:click="$set('selectAll', true)" class="ml-1 text-blue-600">Összes rekord kiválasztása</a>
                             </div>
                         @else
@@ -134,7 +133,7 @@
                     <x-table.cell class="px-0 py-2 w-2/12">
                         <x-forms.dropdown
                             wire:model.debounce.300ms="owner_dropdown"
-                            label="Tulajdonosok keresése"
+                            label="{{ __('Tulajdonosok keresése') }}"
                         >
                             @if(strlen($owner_dropdown) >= 2 and $showOwnersDropDown)
                                 <x-forms.dropdown.list>
@@ -191,17 +190,16 @@
                         <x-table.cell>
                             <div class="flex items-center">
                                 <div class="text-sm font-medium text-gray-900">
-{{--                                    {{ $cd->cables->count() }} --}}
-                                    {{ \DB::table('cable_pairs')->where('conn_dev_id',$cd->id)->count() }}
+                                    {{ \DB::table('cable_pairs')->where('conn_dev_id', $cd->id)->count() }}
                                 </div>
                             </div>
                         </x-table.cell>
                         <x-table.cell class="text-right text-sm font-medium space-x-2">
                             <a type="button" href="{{ route('connectivity_device.edit', ['connectivity_device' => $cd->id]) }}" class="px-3 py-3 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-md">
-                                <i class="fas fa-edit fa-sm" aria-hidden="true" title="Edit"></i>
+                                <i class="fas fa-edit fa-sm" aria-hidden="true" title="{{ __('Edit') }}"></i>
                             </a>
                             <button type="button" wire:click="confirmDelete({{ $cd->id }})" class="px-3 py-3 bg-red-500 hover:bg-red-600 text-white text-xs rounded-md">
-                                <i class="fas fa-trash fa-sm" aria-hidden="true" title="Delete"></i>
+                                <i class="fas fa-trash fa-sm" aria-hidden="true" title="{{ __('Delete') }}"></i>
                             </button>
                         </x-table.cell>
                     </x-table.row>
@@ -209,7 +207,7 @@
                     <x-table.row wire:key="row-empty">
                         <x-table.cell colspan="7">
                             <div class="flex justify-center items-center">
-                                <span class="py-8 text-base font-medium text-gray-400 uppercase">Nincsen ilyen kapcsolati eszköz ...</span>
+                                <span class="py-8 text-base font-medium text-gray-400 uppercase">{{ __('Nincsen ilyen kapcsolati eszköz') }} ...</span>
                             </div>
                         </x-table.cell>
                     </x-table.row>
@@ -270,13 +268,13 @@
                     type="submit"
                     class="border-transparent bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
                 >
-                    Kapcsolati eszköz törlése
+                    {{ __('Törlés') }}
                 </x-forms.button>
                 <x-forms.button
                     class="mt-3 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-indigo-500 sm:mt-0"
                     wire:click="$set('showDeleteModal', false)"
                 >
-                    Mégsem
+                    {{ __('Mégsem') }}
                 </x-forms.button>
             </x-slot>
         </x-modals.delete>
@@ -284,7 +282,9 @@
     </form>
 
     <div wire:loading.delay wire:target="exportSelected">
-        <x-modals.export></x-modals.export>
+        <x-modals.export>
+            {{ __('Kapcsolati eszközök exportálása folyamatban') }} ...
+        </x-modals.export>
     </div>
 
 </div>

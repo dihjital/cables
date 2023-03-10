@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\ConnectivityDevice;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,8 +23,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
 
         Builder::macro('toCsv', function (array $fields) {
 
@@ -45,5 +45,11 @@ class AppServiceProvider extends ServiceProvider
 
         });
 
+        view()->composer('partials.language-switcher', function ($view) {
+            $view->with('current_locale', app()->getLocale());
+            $view->with('available_locales', config('app.available_locales'));
+        });
+
     }
+
 }
