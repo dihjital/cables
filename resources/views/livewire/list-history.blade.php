@@ -3,7 +3,7 @@
     <div class="flex flex-row flow-root">
         <div class="md:flex md:items-center">
             <div class="md:w-1/12">
-                <x-forms.label name="pageSize" label="Page Size:" />
+                <x-forms.label name="pageSize" label="{{ __('Page size') }}:" />
             </div>
             <div class="md:w-1/12">
                 <x-forms.select name="pageSize" wire:model="pageSize">
@@ -28,7 +28,7 @@
                                              focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700
                                              dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600
                                              dark:focus:ring-blue-500 dark:focus:text-white">
-                        {{ $name }}
+                        {{ __($name) }}
                     </button>
                 @endforeach
             </div>
@@ -43,7 +43,7 @@
                 <div class="flex items-center">
                     <button wire:click="sortBy('user.name')"
                             class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Név
+                        {{ __('Name') }}
                     </button>
                     <x-table.sort-icon field="user.name"
                                        :sortField="$sortField" :sortDirection="$sortDirection"></x-table.sort-icon>
@@ -53,18 +53,18 @@
                 <div class="flex items-center">
                     <button wire:click="sortBy('history.action')"
                             class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Művelet
+                        {{ __('Action') }}
                     </button>
                     <x-table.sort-icon field="history.action" :sortField="$sortField"
                                        :sortDirection="$sortDirection"></x-table.sort-icon>
                 </div>
             </x-table.heading>
-            <x-table.heading class="w-3/12">Objektum</x-table.heading>
+            <x-table.heading class="w-3/12">{{ __('Object') }}</x-table.heading>
             <x-table.heading class="w-3/12">
                 <div class="flex items-center">
                     <button wire:click="sortBy('history.updated_at')"
                             class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Módosítás dátuma
+                        {{ __('Date of action') }}
                     </button>
                     <x-table.sort-icon field="history.updated_at" :sortField="$sortField"
                                        :sortDirection="$sortDirection"></x-table.sort-icon>
@@ -125,7 +125,7 @@
                     <x-table.row id="detail-row-{{ $item->id }}"
                                  wire:key="detail-row-{{ $item->id }}">
                         <x-table.cell colspan="3">
-                            <div class="text-sm font-medium text-gray-900">Eredeti értékek:</div>
+                            <div class="text-sm font-medium text-gray-900">{{ __('Original values') }}:</div>
                             @php
                                 $before = (array) json_decode($item->before);
                             @endphp
@@ -137,7 +137,7 @@
                             @endforelse
                         </x-table.cell>
                         <x-table.cell colspan="2">
-                            <div class="text-sm font-medium text-gray-900">Módosított értékek:</div>
+                            <div class="text-sm font-medium text-gray-900">{{ __('New values') }}:</div>
                             @php
                                 $after = (array) json_decode($item->after);
                             @endphp

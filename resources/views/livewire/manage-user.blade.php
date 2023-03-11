@@ -3,7 +3,7 @@
     <div class="flex flex-row flow-root">
         <div class="md:flex md:items-center">
             <div class="md:w-1/12">
-                <x-forms.label name="pageSize" label="Page Size:" />
+                <x-forms.label name="pageSize" label="{{ __('Page size') }}:" />
             </div>
             <div class="md:w-1/12">
                 <x-forms.select name="pageSize" wire:model="pageSize">
@@ -22,19 +22,19 @@
                 <div class="flex items-center">
                     <button wire:click="sortBy('name')"
                             class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Név
+                        {{ __('Name') }}
                     </button>
                     <x-table.sort-icon field="name"
                                        :sortField="$sortField" :sortDirection="$sortDirection"></x-table.sort-icon>
                 </div>
             </x-table.heading>
-            <x-table.heading class="w-2/12">Engedélyezett?</x-table.heading>
-            <x-table.heading class="w-2/12">Admin??</x-table.heading>
+            <x-table.heading class="w-2/12">{{ __('Enabled') }}?</x-table.heading>
+            <x-table.heading class="w-2/12">{{ __('Admin') }}?</x-table.heading>
             <x-table.heading class="w-4/12">
                 <div class="flex items-center">
                     <button wire:click="sortBy('last_login_at')"
                             class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Utolsó bejelentkezés
+                        {{ __('Last login at') }}
                     </button>
                     <x-table.sort-icon field="last_login_at"
                                        :sortField="$sortField" :sortDirection="$sortDirection"></x-table.sort-icon>
@@ -45,7 +45,7 @@
             @forelse($users as $user)
                 <x-table.row wire:loading.class.delay="opacity-75" wire:key="row-{{ $user->id }}">
                     <x-table.cell>
-                        <img class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="{{ $user->avatarUrl() }}" alt="Profil fotó - {{ $user->name }}">
+                        <img class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="{{ $user->avatarUrl() }}" alt="{{  __('Picture - :Name', ["name" => $user->name]) }}">
                     </x-table.cell>
                     <x-table.cell>
                         <div class="text-sm font-medium text-gray-900">
@@ -84,7 +84,7 @@
                 <x-table.row wire:key="row-empty">
                     <x-table.cell colspan="8">
                         <div class="flex justify-center items-center">
-                            <span class="py-8 text-base font-medium text-gray-400 uppercase">Nincsen ilyen felhasználó a rendszerben ...</span>
+                            <span class="py-8 text-base font-medium text-gray-400 uppercase">{{ __('There is no such user in the system') }} ...</span>
                         </div>
                     </x-table.cell>
                 </x-table.row>
@@ -97,4 +97,3 @@
     </div>
 
 </div>
-

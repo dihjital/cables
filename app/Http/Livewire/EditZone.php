@@ -16,22 +16,6 @@ class EditZone extends Component
 
     public Zone $zone;
 
-    protected array $attributes = [
-        'zone.name' => 'Zóna neve'
-    ];
-
-    protected array $messages = [
-        'required' => 'A(z) :attribute mező megadása kötelező.',
-        'min'      => ':attribute kisebb, mint a minimum (:min).',
-        'numeric'  => ':attribute nem szám.',
-        'unique'   => 'A(z) :attribute már létezik az adatbázisban.',
-        'max'      => 'A(z) :attribute mező mérete meghaladja a megengedett maximumot (:max).',
-        'size'     => ':attribute nagyobb, mint a megengedett méret.',
-        'exists'   => 'A(z) :attribute érték nem létezik az adatbázisban.',
-        'required_without'  => ':attribute beállítása kötelező, amennyiben :values nincsen megadva.',
-        'prohibited_if' => ':attribute nem lehet megadva, amennyiben a kábelpár státusza Spare (:value)'
-    ];
-
     public function rules(): array {
         return [
             'zone.name' => [
@@ -58,10 +42,9 @@ class EditZone extends Component
 
     }
 
-
     public function update() {
 
-        $this->validate($this->rules(), $this->messages, $this->attributes);
+        $this->validate();
 
         $this->zone->name = Str::upper($this->zone->name);
         $this->zone->save();

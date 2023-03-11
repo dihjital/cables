@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{__('Kábelek alkalmazás') }}</title>
+        <title>{{ __('Cables application') }}</title>
 
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -32,14 +32,14 @@
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
                         <div class="flex items-center">
-                            <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">{{ __('Műszerfal') }}</a>
+                            <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">{{ __('Dashboard') }}</a>
                             @include('partials/language-switcher')
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">{{ __('Bejelentkezés') }}</a>
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">{{ __('Login') }}</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">{{ __('Regisztráció') }}</a>
+                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">{{ __('Register') }}</a>
                         @endif
                     @endauth
                 </div>
@@ -48,7 +48,7 @@
 
         <div class="h-screen w-screen content-around grid px-10 grid-cols-4 gap-4">
             <x-cards.cables>
-                Lehetőség van a rendszerben a kábelek listázására, tömeges illetve egyedi felvitelére, szerkesztésére és exportálására illetve importálására is .csv formátumból.
+                {{ __('You can list, mass record/modify cables or just edit a specific cable in the system. Exporting and importing of cables is also supported for example from .csv format.') }}
             </x-cards.cables>
             <x-cards.connectivity_devices>
                 Lehetőség van a rendszerben a kapcsolati eszközök listázására, tömeges illetve egyedi felvitelére, szerkesztésére és exportálására illetve importálására is .csv formátumból.

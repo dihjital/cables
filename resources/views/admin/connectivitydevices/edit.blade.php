@@ -2,7 +2,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Kapcsolati eszközök szerkesztése') }}
+            {{ __('Edit Connectivity Device') }}
         </h2>
     </x-slot>
 
@@ -17,17 +17,17 @@
 
                             <div class="md:col-span-1">
                                 <div class="px-4 sm:px-0">
-                                    <h3 class="text-lg font-medium leading-6 text-gray-900">Kapcsolati eszköz módosítása</h3>
-                                    <p class="mt-1 text-sm text-gray-600">Kérem adja meg a módosítani kívánt adatokat</p>
-                                    <p class="mt-4 mb-1 text-sm text-gray-600"><strong>Kötelezően kitöltendő mezők:</strong></p>
+                                    <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('Edit Connectivity Device') }}</h3>
+                                    <p class="mt-1 text-sm text-gray-600">{{ __('Please specify the parameters you would like to change') }}</p>
+                                    <p class="mt-4 mb-1 text-sm text-gray-600"><strong>{{ __('Mandatory fields') }}:</strong></p>
                                     <ul class="text-sm pl-4 text-gray-600 list-disc">
-                                        <li>Kapcsolati eszköz neve</li>
-                                        <li>Típus</li>
-                                        <li>Kezdő kapcsolati pont</li>
-                                        <li>Végződő kapcsolati pont</li>
-                                        <li>Zóna neve</li>
-                                        <li>Lokáció neeve</li>
-                                        <li>Tulajdonos</li>
+                                        <li>{{ __('Connectivity Device name') }}</li>
+                                        <li>{{ __('Type') }}</li>
+                                        <li>{{ __('Start connection point') }}</li>
+                                        <li>{{ __('End connection point') }}</li>
+                                        <li>{{ __('Zone name') }}</li>
+                                        <li>{{ __('Location name') }}</li>
+                                        <li>{{ __('Owner') }}</li>
                                     </ul>
                                     <p class="mt-2 text-sm text-gray-600"></p>
                                 </div>
@@ -51,7 +51,7 @@
 
                                                 <!-- Connectivity Device short name //-->
                                                 <div class="col-span-6 sm:col-span-3">
-                                                    <label for="name" class="block text-sm font-medium text-gray-700">{{ __('Kapcsolati eszköz neve*') }}</label>
+                                                    <label for="name" class="block text-sm font-medium text-gray-700">{{ __('Connectivity Device name') }}*</label>
                                                     <input type="text"
                                                            name="name"
                                                            id="name"
@@ -68,7 +68,7 @@
 
                                                 <!-- Connectivity Device type //-->
                                                 <div class="col-span-6 sm:col-span-3">
-                                                    <label for="connectivity_device_type_id" class="block text-sm font-medium text-gray-700">{{ __('Típus*') }}</label>
+                                                    <label for="connectivity_device_type_id" class="block text-sm font-medium text-gray-700">{{ __('Type') }}*</label>
                                                     <select id="connectivity_device_type_id"
                                                             name="connectivity_device_type_id"
                                                             required
@@ -80,7 +80,7 @@
                                                         @php
                                                             $types = \App\Models\ConnectivityDeviceType::all();
                                                         @endphp
-                                                        <option value="" disabled selected>Kérem válasszon!</option>
+                                                        <option value="" disabled selected>{{ __('Please select') }}!</option>
                                                         @foreach($types as $type)
                                                             <option value="{{ $type->id }}"
                                                                     @if(old('connectivity_device_type_id', $connectivity_device->connectivity_device_type_id) == $type->id)
@@ -97,7 +97,7 @@
 
                                                 <!-- Start connection point //-->
                                                 <div class="col-span-6 sm:col-span-3">
-                                                    <label for="start" class="block text-sm font-medium text-gray-700">{{ __('Kezdő kapcsolati pont*') }}</label>
+                                                    <label for="start" class="block text-sm font-medium text-gray-700">{{ __('Start connection point') }}*</label>
                                                     <input type="text"
                                                            name="start"
                                                            id="start"
@@ -113,7 +113,7 @@
 
                                                 <!-- End connection point //-->
                                                 <div class="col-span-6 sm:col-span-3">
-                                                    <label for="end" class="block text-sm font-medium text-gray-700">{{ __('Végződő kapcsolati pont*') }}</label>
+                                                    <label for="end" class="block text-sm font-medium text-gray-700">{{ __('End connection point') }}*</label>
                                                     <input type="text"
                                                            name="end"
                                                            id="end"
@@ -129,7 +129,7 @@
 
                                                 <!-- Zone name //-->
                                                 <div class="col-span-6 sm:col-span-3">
-                                                    <label for="zone_id" class="block text-sm font-medium text-gray-700">{{ __('Zóna neve*') }}</label>
+                                                    <label for="zone_id" class="block text-sm font-medium text-gray-700">{{ __('Zone name') }}*</label>
                                                     <livewire:zone-lookup :zone="old('zone_id', $connectivity_device)"/>
                                                     <div x-data="{ zone_id: {{ old('zone_id', $connectivity_device) }} }"
                                                          @zone-updated.window="zone_id = $event.detail.zone_id">
@@ -140,7 +140,7 @@
 
                                                 <!-- Location name //-->
                                                 <div class="col-span-6 sm:col-span-3">
-                                                    <label for="location_id" class="block text-sm font-medium text-gray-700">{{ __('Lokáció neve*') }}</label>
+                                                    <label for="location_id" class="block text-sm font-medium text-gray-700">{{ __('Location name') }}*</label>
                                                     <livewire:location-lookup :location="old('location_id', $connectivity_device)"/>
                                                     <div x-data="{ location_id: {{ old('location_id', $connectivity_device) }} }"
                                                          @location-updated.window="location_id = $event.detail.location_id">
@@ -153,7 +153,7 @@
 
                                                 <!-- Connectivity Device owner //-->
                                                 <div class="col-span-6 sm:col-span-3">
-                                                    <label for="owner_id" class="block text-sm font-medium text-gray-700">{{ __('Tulajdonos*') }}</label>
+                                                    <label for="owner_id" class="block text-sm font-medium text-gray-700">{{ __('Owner') }}*</label>
                                                     <div class="flex">
                                                         <livewire:create-owner />
                                                         <select id="owner_id"
@@ -168,7 +168,7 @@
                                                             @php
                                                                 $owners = \App\Models\Owner::query()->orderBy('name')->get();
                                                             @endphp
-                                                            <option value="" disabled selected>Kérem válasszon!</option>
+                                                            <option value="" disabled selected>{{ __('Please select') }}!</option>
                                                             @foreach($owners as $owner)
                                                                 <option value="{{ $owner->id }}"
                                                                         @if(old('owner_id', $connectivity_device->owner_id) == $owner->id)
@@ -186,8 +186,8 @@
                                         </div>
 
                                         <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                            <x-primary-button>{{ __('Módosítás') }}</x-primary-button>
-                                            <x-secondary-button class="ml-2"><a href="{{ route('connectivity_device.index') }}">{{ __('Mégsem') }}</a></x-secondary-button>
+                                            <x-primary-button>{{ __('Modify') }}</x-primary-button>
+                                            <x-secondary-button class="ml-2"><a href="{{ route('connectivity_device.index') }}">{{ __('Cancel') }}</a></x-secondary-button>
                                         </div>
 
                                     </div>

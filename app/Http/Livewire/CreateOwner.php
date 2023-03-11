@@ -15,17 +15,6 @@ class CreateOwner extends Component
 
     public function mount(Owner $owner) { $this->owner = $owner; }
 
-    protected array $attributes = [
-        'owner.name' => 'Tulajdonos neve'
-    ];
-
-    protected array $messages = [
-        'required' => 'A(z) :attribute mező megadása kötelező.',
-        'min'      => 'A(z) :attribute rövidebb, mint a minimum (:min).',
-        'unique'   => 'A(z) :attribute nem egyedi az adatbázisban.',
-        'string'   => 'A(z) :attribute nem karakterlánc.'
-    ];
-
     protected array $rules = [
         'owner.name' => [
             'required',
@@ -57,7 +46,7 @@ class CreateOwner extends Component
 
     public function save() {
 
-        $this->validate($this->rules, $this->messages, $this->attributes);
+        $this->validate($this->rules);
 
         $this->owner->id ? $this->owner->update() : $this->owner->save();
 
