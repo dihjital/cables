@@ -1,6 +1,6 @@
 <div>
 
-    <a href="{{ route('cables.create') }}" title="{{ __('Új rekord') }}"
+    <a href="{{ route('cables.create') }}" title="{{ __('New record') }}"
        class="fixed z-100 bottom-10 right-8 bg-blue-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-blue-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
         <svg width="50" height="50" fill="currentColor"
              class="bi bi-plus" viewBox="0 0 16 16">
@@ -44,16 +44,7 @@
 
     <div class="flex flex-row flow-root">
         <div class="flex items-center">
-            <div class="w-1/12">
-                <x-forms.label name="pageSize" label="{{ __('Page size') }}:" />
-            </div>
-            <div class="w-1/12 mr-4">
-                <x-forms.select name="pageSize" wire:model="pageSize">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                </x-forms.select>
-            </div>
+            @include('partials/page-size')
 
             @php
                 $cablePairStatuses = \App\Models\CablePairStatus::all();
@@ -87,24 +78,24 @@
                 <div class="flex items-center whitespace-nowrap">
                     <button wire:click="sortBy('name')"
                             class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{ __('Név') }}
+                        {{ __('Name') }}
                     </button>
                     <x-table.sort-icon field="name" :sortField="$sortField" :sortDirection="$sortDirection"/>
                 </div>
             </x-table.heading>
-            <x-table.heading class="w-1/12">{{ __('Kezdő eszköz') }}</x-table.heading>
-            <x-table.heading class="w-1/12">{{ __('Végződő eszköz') }}</x-table.heading>
-            <x-table.heading class="w-1/12">{{ __('Állapot') }}</x-table.heading>
+            <x-table.heading class="w-1/12">{{ __('Start device') }}</x-table.heading>
+            <x-table.heading class="w-1/12">{{ __('End device') }}</x-table.heading>
+            <x-table.heading class="w-1/12">{{ __('Status') }}</x-table.heading>
             <x-table.heading class="w-1/12">
                 <div class="flex items-center whitespace-nowrap">
                     <button wire:click="sortBy('i_time')"
                             class="leading-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{ __('Telepítés dátuma') }}
+                        {{ __('Install date') }}
                     </button>
                     <x-table.sort-icon field="i_time" :sortField="$sortField" :sortDirection="$sortDirection"/>
                 </div>
             </x-table.heading>
-            <x-table.heading class="w-2/12">{{ __('Felhasználás') }}</x-table.heading>
+            <x-table.heading class="w-2/12">{{ __('Purpose') }}</x-table.heading>
             <x-table.heading class="w-2/12"></x-table.heading>
         </x-slot>
         <x-slot name="body">
@@ -113,8 +104,8 @@
                     <x-table.cell colspan="8" class="bt-0">
                         @unless($selectAll)
                             <div class="text-sm">
-                                <span>{{ __('Kiválasztott rekordok száma') }}: <strong>{{ $cables->count() }}</strong> db., ki szeretnéd mind a(z) <strong>{{ $cables->total() }}</strong> db.-ot választani?</span>
-                                <a href="#" wire:click="$set('selectAll', true)" class="ml-1 text-blue-600">{{ __('Összes rekord kiválasztása') }}</a>
+                                <span>{{ __('Number of selected records') }}: <strong>{{ $cables->count() }}</strong> db., ki szeretnéd mind a(z) <strong>{{ $cables->total() }}</strong> db.-ot választani?</span>
+                                <a href="#" wire:click="$set('selectAll', true)" class="ml-1 text-blue-600">{{ __('Select all records') }}</a>
                             </div>
                         @else
                             <span class="text-sm">Jelenleg mind a(z) <strong>{{ $cables->total() }}</strong> rekordot kiválasztottad.</span>
@@ -204,7 +195,7 @@
                 <x-table.row wire:key="row-empty">
                     <x-table.cell colspan="8">
                         <div class="flex justify-center items-center">
-                            <span class="py-8 text-base font-medium text-gray-400 uppercase">{{ __('Nincsen ilyen kábel nyilvántartva a rendszerben') }} ...</span>
+                            <span class="py-8 text-base font-medium text-gray-400 uppercase">{{ __('There is no such cable registered in the system') }} ...</span>
                         </div>
                     </x-table.cell>
                 </x-table.row>
@@ -229,7 +220,7 @@
                 módosíthatók vagy törölhetők. Amennyiben egy kábelhez megjegyzés kapcsolódik, akkor a lista nézetben a megjegyzések
                 ikon piros színre vált.') }}
                 <label for="comment" class="block mt-2 mb-2 text-sm text-gray-900">
-                    {{ __('Megjegyzés') }}:
+                    {{ __('Comment') }}:
                 </label>
                 <textarea id="comment"
                           rows="4"
@@ -242,13 +233,13 @@
                     type="submit"
                     class="border-transparent bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
                 >
-                    {{ __('OK') }}
+                    {{ __('Save') }}
                 </x-forms.button>
                 <x-forms.button
                     class="mt-3 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-indigo-500 sm:mt-0"
                     wire:click="$set('showCommentModal', false)"
                 >
-                    {{ __('Mégsem') }}
+                    {{ __('Cancel') }}
                 </x-forms.button>
             </x-slot>
         </x-modals.comment>
@@ -262,7 +253,7 @@
 
         <x-modals.delete wire:model.defer="showDeleteModal">
             @if ($selectedItems)
-                <x-slot name="title">{{ __('Kábelek törlése') }}</x-slot>
+                <x-slot name="title">{{ __('Delete cables') }}</x-slot>
             @else
                 <x-slot name="title">{{ __('Kábel törlése - :NAME', ['name' => $currentCable->full_name]) }}</x-slot>
             @endif
@@ -287,13 +278,13 @@
                     type="submit"
                     class="border-transparent bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
                 >
-                    {{ __('Törlés') }}
+                    {{ __('Delete') }}
                 </x-forms.button>
                 <x-forms.button
                     class="mt-3 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-indigo-500 sm:mt-0"
                     wire:click="$set('showDeleteModal', false)"
                 >
-                    {{ __('Mégsem') }}
+                    {{ __('Cancel') }}
                 </x-forms.button>
             </x-slot>
         </x-modals.delete>
@@ -306,13 +297,12 @@
 
         <x-modals.dialog wire:model.defer="showUpdateModal">
 
-            <x-slot name="title">{{ __('Kábelek tömeges szerkesztése') }}</x-slot>
+            <x-slot name="title">{{ __('Mass edit of cables') }}</x-slot>
 
             <x-slot name="content">
 
                 <p class="col-span-6 sm:col-span-3 lg:col-span-6 text-gray-700 dark:text-gray-200 mb-4">
-                    {{ __('A kiválasztott kábelek tömeges módosítása esetén a kábelpár státusza,
-                    illetve a kábelek felhasználási módja változtatható.') }}
+                    {{ __('In case of mass edit you can only change the cable pair status and the cable purpose for the selected cables.') }}
                 </p>
 
                 <div class="col-span-6 sm:col-span-3 lg:col-span-6" wire:key="cablePairStatus">
@@ -329,7 +319,7 @@
                                    py-2 px-3 shadow-sm
                                    focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                    sm:text-sm">
-                        <option value="0" disabled>{{ __('Kérem válasszon') }}</option>
+                        <option value="0" disabled>{{ __('Please select') }}!</option>
                         @foreach($cablePairStatuses as $status)
                             <option value="{{ $status->id }}"
                                     @if ($cablePairStatusId === $status->id)
@@ -357,7 +347,7 @@
                                    py-2 px-3 shadow-sm
                                    focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                    sm:text-sm">
-                        <option value="0" disabled>{{ __('Kérem válasszon') }}</option>
+                        <option value="0" disabled>{{ __('Please select') }}!</option>
                         @foreach($cablePurposes as $purpose)
                             <option value="{{ $purpose->id }}"
                                     @if ($cablePurposeId === $purpose->id)
@@ -374,8 +364,8 @@
             </x-slot>
 
             <x-slot name="footer">
-                <x-primary-button>{{ __('Módosítás') }}</x-primary-button>
-                <x-secondary-button wire:click="toggleUpdateModal" class="ml-2">{{ __('Mégsem') }}</x-secondary-button>
+                <x-primary-button>{{ __('Modify') }}</x-primary-button>
+                <x-secondary-button wire:click="toggleUpdateModal" class="ml-2">{{ __('Cancel') }}</x-secondary-button>
             </x-slot>
 
         </x-modals.dialog>
@@ -384,7 +374,7 @@
 
     <div wire:loading.delay wire:target="exportSelected">
         <x-modals.export>
-            {{ __('Kábelek exportálása folyamatban') }} ...
+            {{ __('Exporting cables in progress') }} ...
         </x-modals.export>
     </div>
 

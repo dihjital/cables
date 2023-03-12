@@ -2,9 +2,9 @@
     <div class="md:grid md:grid-cols-3 md:gap-6">
         <div class="md:col-span-1">
             <div class="px-4 sm:px-0">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Új kábel rögzítése</h3>
+                <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('Register new Cable') }}</h3>
                 <p class="mt-1 text-sm text-gray-600">Kérem adja meg a kábel rögzítéséhez szükséges adatokat</p>
-                <p class="mt-4 mb-1 text-sm text-gray-600"><strong>Kötelezően kitöltendő mezők:</strong></p>
+                <p class="mt-4 mb-1 text-sm text-gray-600"><strong>{{ __('Mandatory fields') }}:</strong></p>
                 <ul class="text-sm pl-4 text-gray-600 list-disc">
                     <li>Kezdő kapcsolati eszköz tulajdonosa</li>
                     <li>Végződő kapcsolati eszköz tulajdonosa</li>
@@ -12,7 +12,7 @@
                     <li>Végződő kapcsolati eszköz</li>
                     <li>Kábel típusa</li>
                     <li>Kábel felhasználási módja</li>
-                    <li>Kábel neve</li>
+                    <li>{{ __('Cable name') }}</li>
                     <li>Kábelpár státusza</li>
                 </ul>
                 <p class="mt-2 text-sm text-gray-600">*A kezdő illetve végződő kapcsolati pontok kitöltése nem kötelező. A kábelpár státusza alapján kell ezeket megadni</p>
@@ -29,7 +29,7 @@
                         <div class="grid grid-cols-6 gap-6">
 
                             <div class="col-span-6 sm:col-span-3" wire:key="startCDOwner">
-                                <label for="selectCD[startCDOwner]" class="block text-sm font-medium text-gray-700">Kezdő kapcsolati eszköz tulajdonosa*</label>
+                                <label for="selectCD[startCDOwner]" class="block text-sm font-medium text-gray-700">{{ __('Start connectivity device owner') }}*</label>
                                 <div class="flex">
                                     <livewire:create-owner />
                                     <select id="selectCD[startCDOwner]"
@@ -42,7 +42,7 @@
                                                    py-2 px-3 shadow-sm
                                                    focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                    sm:text-sm">
-                                            <option value="0" disabled>Kérem válasszon</option>
+                                            <option value="0" disabled>{{ __('Please select') }}!</option>
                                         @forelse($owners as $owner)
                                             <option value="{{ $owner->id }}"
                                                     @if ($selectCD['startCDOwner'] === $owner->id)
@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="col-span-6 sm:col-span-3" wire:key="endCDOwner">
-                                <label for="selectCD[endCDOwner]" class="block text-sm font-medium text-gray-700">Végződő kapcsolati eszköz tulajdonosa*</label>
+                                <label for="selectCD[endCDOwner]" class="block text-sm font-medium text-gray-700">{{ __('End connectivity device owner') }}*</label>
                                 <select id="selectCD[endCDOwner]"
                                         name="selectCD[endCDOwner]"
                                         wire:model="selectCD.endCDOwner"
@@ -69,7 +69,7 @@
                                                py-2 px-3 shadow-sm
                                                focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                sm:text-sm">
-                                        <option value="0" disabled>Kérem válasszon</option>
+                                        <option value="0" disabled>{{ __('Please select') }}!</option>
                                     @forelse($owners as $owner)
                                         <option value="{{ $owner->id }}"
                                                 @if ($selectCD['endCDOwner'] === $owner->id)
@@ -95,7 +95,7 @@
                                                py-2 px-3 shadow-sm
                                                focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                sm:text-sm">
-                                    <option value="0" disabled>Kérem válasszon</option>
+                                    <option value="0" disabled>{{ __('Please select') }}!</option>
                                     @forelse($startCDList as $startCD)
                                         <option value="{{ $startCD->id }}"
                                                 @if ($selectCD['startCDId'] === $startCD->id)
@@ -121,7 +121,7 @@
                                                py-2 px-3 shadow-sm
                                                focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                sm:text-sm">
-                                    <option value="0" disabled>Kérem válasszon</option>
+                                    <option value="0" disabled>{{ __('Please select') }}!</option>
                                     @forelse($endCDList as $endCD)
                                         <option value="{{ $endCD->id }}"
                                                 @if ($selectCD['endCDId'] === $endCD->id)
@@ -143,7 +143,7 @@
                                             class="mt-1 inline-flex items-center py-2 px-2.5
                                                    bg-red-500 hover:bg-red-600 text-white text-xs rounded-l-md
                                                    border border-r-0 border-red-500">
-                                        <i class="fas fa-trash fa-sm" aria-hidden="true" title="Reset"></i>
+                                        <i class="fas fa-trash fa-sm" aria-hidden="true" title="{{ __('Reset') }}"></i>
                                     </button>
                                     <select id="selectCD[startConnectionPoint]"
                                             name="selectCD[startConnectionPoint]"
@@ -153,7 +153,7 @@
                                                    py-2 px-3 shadow-sm
                                                    focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                    sm:text-sm">
-                                        <option value="" disabled>Kérem válasszon</option>
+                                        <option value="" disabled>{{ __('Please select') }}!</option>
                                         @forelse($startCablePairsList as $cablePair)
                                         <option wire:key="key-startCablePairsList-{{ $loop->index }}"
                                                 value="{{ $cablePair->conn_point }}"
@@ -180,7 +180,7 @@
                                             class="mt-1 inline-flex items-center py-2 px-2.5
                                                    bg-red-500 hover:bg-red-600 text-white text-xs rounded-l-md
                                                    border border-r-0 border-red-500">
-                                        <i class="fas fa-trash fa-sm" aria-hidden="true" title="Reset"></i>
+                                        <i class="fas fa-trash fa-sm" aria-hidden="true" title="{{ __('Reset') }}"></i>
                                     </button>
                                     <select id="selectCD[endConnectionPoint]"
                                             name="selectCD[endConnectionPoint]"
@@ -190,7 +190,7 @@
                                                    py-2 px-3 shadow-sm
                                                    focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                    sm:text-sm">
-                                        <option value="" disabled>Kérem válasszon</option>
+                                        <option value="" disabled>{{ __('Please select') }}!</option>
                                         @forelse($endCablePairsList as $cablePair)
                                         <option wire:key="key-endCablePairsList-{{ $loop->index }}"
                                                 value="{{ $cablePair->conn_point }}"
@@ -223,7 +223,7 @@
                                                    py-2 px-3 shadow-sm
                                                    focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                    sm:text-sm">
-                                    <option value="0" disabled>Kérem válasszon</option>
+                                    <option value="0" disabled>{{ __('Please select') }}!</option>
                                     @foreach($cableTypes as $type)
                                         <option value="{{ $type->id }}"
                                                 @if ($cableTypeId === $type->id)
@@ -248,7 +248,7 @@
                                                        py-2 px-3 shadow-sm
                                                        focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                        sm:text-sm">
-                                    <option value="0" disabled>Kérem válasszon</option>
+                                    <option value="0" disabled>{{ __('Please select') }}!</option>
                                     @foreach($cablePurposes as $purpose)
                                         <option value="{{ $purpose->id }}"
                                                 @if ($cablePurposeId === $purpose->id)
@@ -273,7 +273,7 @@
                                                py-2 px-3 shadow-sm
                                                focus:border-indigo-500 focus:outline-none focus:ring-indigo-500
                                                sm:text-sm">
-                                    <option value="0" disabled>Kérem válasszon</option>
+                                    <option value="0" disabled>{{ __('Please select') }}!</option>
                                     @foreach($cablePairStatuses as $status)
                                         <option value="{{ $status->id }}"
                                                 @if ($cablePairStatusId === $status->id)
@@ -307,7 +307,7 @@
                             <div class="col-span-6"><hr></div>
 
                             <div class="col-span-6 sm:col-span-6 lg:col-span-2" wire:key="installTime">
-                                <label for="installTime" class="block text-sm font-medium text-gray-700">Telepítés dátuma</label>
+                                <label for="installTime" class="block text-sm font-medium text-gray-700">{{ __('Install date') }}</label>
                                 <input type="date"
                                        name="installTime"
                                        id="installTime"
@@ -319,7 +319,7 @@
                             <div class="col-span-6"><hr></div>
 
                             <div class="col-span-6 sm:col-span-3 lg:col-span-6" wire:key="cableComment">
-                                <label for="cableComment" class="block text-sm font-medium text-gray-700">Megjegyzés</label>
+                                <label for="cableComment" class="block text-sm font-medium text-gray-700">{{ __('Comment') }}</label>
                                 <textarea id="cableComment"
                                           rows="5"
                                           class="text-left text-gray-700 mt-2 p-2.5 w-full
@@ -346,8 +346,8 @@
                         </div>
                     </div>
                     <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                        <x-primary-button>{{ __('Rögzítés') }}</x-primary-button>
-                        <x-secondary-button class="ml-2"><a href="{{ route('cables.index') }}">{{ __('Mégsem') }}</a></x-secondary-button>
+                        <x-primary-button>{{ __('Save') }}</x-primary-button>
+                        <x-secondary-button class="ml-2"><a href="{{ route('cables.index') }}">{{ __('Cancel') }}</a></x-secondary-button>
                     </div>
                 </div>
 

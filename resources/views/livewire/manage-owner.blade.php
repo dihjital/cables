@@ -17,16 +17,7 @@
 
         <div class="flex flex-row flow-root">
             <div class="flex items-center">
-                <div class="w-1/12">
-                    <x-forms.label name="pageSize" label="{{ __('Page size') }}:" />
-                </div>
-                <div class="w-1/12 mr-4">
-                    <x-forms.select name="pageSize" wire:model="pageSize">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                    </x-forms.select>
-                </div>
+                @include('partials/page-size')
                 <div class="w-full float-right inline-flex rounded-md justify-end space-x-1">
                     @if(count($selectedItems))
                         <button class="px-5 py-2 bg-gray-600 hover:bg-gray-700 text-white text-xs rounded-xl"
@@ -81,8 +72,8 @@
                         <x-table.cell colspan="5" class="bt-0">
                             @unless($selectAll)
                                 <div class="text-sm">
-                                    <span>Kiválasztott rekordok száma: <strong>{{ $owners->count() }}</strong> db., ki szeretnéd mind a(z) <strong>{{ $owners->total() }}</strong> db.-ot választani?</span>
-                                    <a href="#" wire:click="$set('selectAll', true)" class="ml-1 text-blue-600">Összes rekord kiválasztása</a>
+                                    <span>{{ __('Number of selected records') }}: <strong>{{ $owners->count() }}</strong> db., ki szeretnéd mind a(z) <strong>{{ $owners->total() }}</strong> db.-ot választani?</span>
+                                    <a href="#" wire:click="$set('selectAll', true)" class="ml-1 text-blue-600">{{ __('Select all records') }}</a>
                                 </div>
                             @else
                                 <span class="text-sm">Jelenleg mind a(z) <strong>{{ $owners->total() }}</strong> rekordot kiválasztottad.</span>
@@ -158,18 +149,16 @@
             @endif
             <x-slot name="body">
                 @if ($showDeleteModal && $selectedItems )
-                    Biztos benne, hogy törölni kívánja a kiválasztott tulajdonosokat? A művelet nem visszavonható
-                    változást eredményez a rendszer adatbázisában.
+                    {{ __('Are you sure you want to delete the selected owners? The operation will cause an irreversible change in the system database.') }}
                     <label for="message" class="block mt-2 mb-2 text-sm text-gray-900">
-                        A törölni kívánt tulajdonosok listája (első 10 db.):
+                        {{ __('List of selected owners for deletion (first 10)') }}:
                     </label>
                     <textarea id="message"
                               rows="4"
                               class="text-left p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                     >@foreach (collect($selectedItems)->take(10) as $item){{ trim($owners->firstWhere('id', $item)->name).PHP_EOL }}@endforeach</textarea>
                 @else
-                    Biztos benne, hogy törölni kívánja a kiválasztott tulajdonost? A művelet nem visszavonható
-                    változást eredményez a rendszer adatbázisában.
+                    {{ __('Are you sure you want to delete the selected owner? The operation will cause an irreversible change in the system database.') }}
                 @endif
             </x-slot>
             <x-slot name="footer">

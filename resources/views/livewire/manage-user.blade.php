@@ -2,16 +2,7 @@
 
     <div class="flex flex-row flow-root">
         <div class="md:flex md:items-center">
-            <div class="md:w-1/12">
-                <x-forms.label name="pageSize" label="{{ __('Page size') }}:" />
-            </div>
-            <div class="md:w-1/12">
-                <x-forms.select name="pageSize" wire:model="pageSize">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                </x-forms.select>
-            </div>
+            @include('partials/page-size')
         </div>
     </div>
 

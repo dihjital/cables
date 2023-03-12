@@ -24,16 +24,7 @@
 
         <div class="flex flex-row flow-root">
             <div class="flex items-center">
-                <div class="w-1/12">
-                    <x-forms.label name="pageSize" label="Page Size:" />
-                </div>
-                <div class="w-1/12 mr-4">
-                    <x-forms.select name="pageSize" wire:model="pageSize">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                    </x-forms.select>
-                </div>
+                @include('partials/page-size')
                 <div class="w-full float-right inline-flex rounded-md justify-end space-x-1">
                     @if(count($selectedItems))
                         <button class="px-5 py-2 bg-gray-600 hover:bg-gray-700 text-white text-xs rounded-xl"

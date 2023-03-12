@@ -6,7 +6,7 @@
                 class="mt-1 inline-flex items-center py-5 px-2.5
                        bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-l-md
                        border border-r-0 border-blue-500">
-                <i class="fas fa-plus fa-sm" aria-hidden="true" title="Add new owner"></i>
+                <i class="fas fa-plus fa-sm" aria-hidden="true" title="{{ __('Add new owner') }}"></i>
             </button>
         </div>
     @else
@@ -24,17 +24,22 @@
 
         <x-modals.dialog wire:model.defer="showOwnerModal">
 
-            <x-slot name="title">Új tulajdonos rögzítése a rendszerben</x-slot>
+            <x-slot name="title">
+                @if($owner->id)
+                    {{ __('Modify Owner') }}
+                @else
+                    {{ __('Register new owner in the system') }}
+                @endif
+            </x-slot>
 
             <x-slot name="content">
 
                 <p class="col-span-6 sm:col-span-3 lg:col-span-6 text-gray-700 dark:text-gray-200 mb-4">
-                    A kiválasztott kábelek tömeges módosítása esetén a kábelpár státusza,
-                    illetve a kábelek felhasználási módja változtatható.
+                    {{ __('Please provide the name of the owner. It must be at least 2 characters long and should be unique in the database.') }}
                 </p>
 
                 <div class="col-span-6 sm:col-span-3 col-span-6 mt-4 mb-4">
-                    <label for="ownerName" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tulajdonos neve:</label>
+                    <label for="ownerName" class="block text-sm font-medium text-gray-700 dark:text-gray-200">{{ __('Owner\'s name') }}:</label>
                     <input  id="ownerName"
                             name="ownerName"
                             wire:model.defer="owner.name"
@@ -48,8 +53,8 @@
             </x-slot>
 
             <x-slot name="footer">
-                <x-primary-button wire:click="save" form="saveNewOwner">{{ __('Rendben') }}</x-primary-button>
-                <x-secondary-button wire:click.self="toggleShowOwnerModal" class="ml-2">{{ __('Mégsem') }}</x-secondary-button>
+                <x-primary-button wire:click="save" form="saveNewOwner">{{ $owner->id ? __('Modify') : __('Save') }}</x-primary-button>
+                <x-secondary-button wire:click.self="toggleShowOwnerModal" class="ml-2">{{ __('Cancel') }}</x-secondary-button>
             </x-slot>
 
         </x-modals.dialog>

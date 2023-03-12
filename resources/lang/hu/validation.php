@@ -67,9 +67,26 @@ return [
     */
 
     'attributes' => [
+        // Owner create and edit
         'owner.name' => 'Tulajdonos neve',
+
+        // Zone create and edit
         'zoneName' => 'Zóna neve',
-        'zone.name' => 'Zóna neve'
+        'zone.name' => 'Zóna neve',
+
+        // Location create and edit
+        'locationName' => 'Lokáció neve',
+        'location.name' => 'Lokáció neve',
+
+        // Cable import
+        'fieldColumnMap.full_name' => 'Név',
+        'fieldColumnMap.startCD' => 'Kezdő kapcsolati eszköz',
+        'fieldColumnMap.start' => 'Kezdőpont',
+        'fieldColumnMap.endCD' => 'Végződő kapcsolati eszköz',
+        'fieldColumnMap.end' => 'Végpont',
+        'fieldColumnMap.i_time' => 'Telepítés dátuma',
+        'fieldColumnMap.status' => 'Kábelpár állapota',
+        'fieldColumnMap.purpose' => 'Felhasználási mód'
     ],
 
 ];

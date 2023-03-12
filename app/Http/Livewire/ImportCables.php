@@ -32,38 +32,30 @@ class ImportCables extends Component
 
     public array $importFailures = [];
 
-    protected array $rules = [
-        'fieldColumnMap.full_name' => 'required',
-        'fieldColumnMap.startCD' => 'required',
-        'fieldColumnMap.start' => 'required',
-        'fieldColumnMap.endCD' => 'required',
-        'fieldColumnMap.end' => 'required',
-        'fieldColumnMap.status' => 'required',
-        'fieldColumnMap.purpose' => 'required'
-    ];
-
-    protected array $messages = [
-        'required' => 'A(z) :attribute mező megadása kötelező.',
-    ];
-
-    // for some reason if I change the visibility to protected this will not work
-    public array $attributes = [
-        'fieldColumnMap.full_name' => 'Név',
-        'fieldColumnMap.startCD' => 'Kezdő kapcsolati eszköz',
-        'fieldColumnMap.start' => 'Kezdőpont',
-        'fieldColumnMap.endCD' => 'Végződő kapcsolati eszköz',
-        'fieldColumnMap.end' => 'Végpont',
-        'fieldColumnMap.i_time' => 'Telepítés dátuma',
-        'fieldColumnMap.status' => 'Kábelpár állapota',
-        'fieldColumnMap.purpose' => 'Felhasználási mód'
-    ];
+    protected function rules(): array {
+        return [
+            'fieldColumnMap.full_name' => 'required',
+            'fieldColumnMap.startCD' => 'required',
+            'fieldColumnMap.start' => 'required',
+            'fieldColumnMap.endCD' => 'required',
+            'fieldColumnMap.end' => 'required',
+            'fieldColumnMap.status' => 'required',
+            'fieldColumnMap.purpose' => 'required'
+        ];
+    }
 
     public function updatedShowImportModal($value) { if (!$value) $this->reset(); }
 
     public function toggleModal() {
+
         $this->showImportModal = ! $this->showImportModal;
-        if (!$this->showImportModal)
+
+        if (!$this->showImportModal) {
+            $this->resetValidation();
+            $this->resetErrorBag();
             $this->reset();
+        }
+
     }
 
     public function updatingUpload($value) {
@@ -89,7 +81,7 @@ class ImportCables extends Component
 
     public function import() {
 
-        $this->validate($this->rules, $this->messages, $this->attributes);
+        $this->validate();
 
         $cablesImport = new CablesImport();
 

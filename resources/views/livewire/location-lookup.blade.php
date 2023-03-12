@@ -1,7 +1,7 @@
 <div>
     <x-forms.dropdown
         wire:model.debounce.300ms="locationDropDown"
-        label="Lokációk"
+        label="{{ __('Locations') }}"
         padding="px-0 lg:ml-0"
         required
         maxlength="3"
@@ -21,7 +21,7 @@
                     </x-forms.dropdown.item>
                 @empty
                     <x-forms.dropdown.item>
-                        <div class="px-4 py-4">Nincsen ilyen elem "{{ $locationDropDown }}" a listában</div>
+                        <div class="px-4 py-4">{{ __('There is no such item: :ITEM on the list', ['item' => $locationDropDown]) }}</div>
                     </x-forms.dropdown.item>
                 @endforelse
             </x-forms.dropdown.list>
